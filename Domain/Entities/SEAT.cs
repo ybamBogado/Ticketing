@@ -15,5 +15,10 @@ namespace Domain.Entities
         public int SeatNumber { get; set; }
         public string Status { get; set; }
         public int Version { get; set; }
+
+        public int SectorId { get; set; }
+        public Sector Sector { get; set; } = null!;
+        
+        public Reservation? CurrentReservation { get; set; } 
     }
 }
