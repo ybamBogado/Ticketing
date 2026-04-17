@@ -1,5 +1,8 @@
+using Application.Interfaces;
+using Application.Queries;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Infrastructure.Commands;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,9 +13,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//custom
 builder.Services.AddDbContext<AppDbContext>(options =>
       options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddScoped<IGetEventCatalogQuery, GetEventCatalogQuery>();
+builder.Services.AddScoped<ICreateEventCommand, CreateEventCommand>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -29,3 +35,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+
