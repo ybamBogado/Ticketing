@@ -1,9 +1,9 @@
+using Application.Handlers;
 using Application.Interfaces;
 using Application.Queries;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-
-using Application.Handlers;
+using Ticketinador2000.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +23,25 @@ builder.Services.AddScoped<ICreateEventCommandHandler, CreateEventCommandHandler
 builder.Services.AddScoped<IGetSeatStatusQueryHandler, GetSeatStatusQueryHandler>();
 builder.Services.AddScoped<IReserveSeatCommandHandler, ReserveSeatCommandHandler>();
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+
+        context.Database.EnsureCreated();
+
+        DbInitializer.Initialize(context);
+    }
+    catch (Exception ex)
+    {
+        // Si falla por algún motivo (ej: base de datos apagada), lo podemos ver en la consola
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Ocurrió un error inicializando la base de datos.");
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
