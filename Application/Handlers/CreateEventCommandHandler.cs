@@ -1,23 +1,26 @@
-﻿using Application.DTOs;
-using Application.Interfaces;
+
 using Domain.Entities;
-using Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Commands;
+using Infrastructure.Persistence;
 
-namespace Infrastructure.Commands
+
+using Application.Interfaces;
+
+namespace Application.Handlers
 {
-    public class CreateEventCommand : ICreateEventCommand
+    public class CreateEventCommandHandler : ICreateEventCommandHandler
     {
-        private readonly AppDbContext _context;
-        public CreateEventCommand(AppDbContext context)
+        private readonly IAppDbContext _context;
+        public CreateEventCommandHandler(IAppDbContext context)
         {
             _context = context;
         }
-        public async Task<int> ExecuteAsync(CreateEventRequest request)
+        public async Task<int> HandlerAsync(CreateEventCommand request)
         {
             var newEvent = new Event
             {
@@ -26,11 +29,13 @@ namespace Infrastructure.Commands
                 Venue = request.Venue,
                 Status = "Active"
             };
-        
+
             _context.Events.Add(newEvent);
             await _context.SaveChangesAsync();
             return newEvent.Id;
         }
+        
 
+       
     }
 }
