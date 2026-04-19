@@ -3,6 +3,7 @@ using Application.Interfaces;
 using Application.Queries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Application.Commands;
 
 namespace Api.Controllers
 {
@@ -11,9 +12,11 @@ namespace Api.Controllers
     public class SeatController : ControllerBase
     {
         private readonly IGetSeatStatusQueryHandler _getSeatStatusQueryHandler;
-        public SeatController(IGetSeatStatusQueryHandler getSeatStatusQueryHandler)
+        private readonly IReserveSeatCommandHandler _reserveSeatCommandHandler;
+        public SeatController(IGetSeatStatusQueryHandler getSeatStatusQueryHandler, IReserveSeatCommandHandler reserveSeatCommandHandler)
         {
             _getSeatStatusQueryHandler = getSeatStatusQueryHandler;
+            _reserveSeatCommandHandler = reserveSeatCommandHandler;
         }
         [HttpGet("{eventId}")] 
         public async Task<ActionResult<IEnumerable<SeatStatusDto>>> GetSeatsByEvent(int eventId)
@@ -22,6 +25,14 @@ namespace Api.Controllers
             var result = await _getSeatStatusQueryHandler.HandlerAsync(query); 
 
             return Ok(result); 
+        }
+        [HttpPost("reserve")]
+        public async Task<IActionResult>ReserveSeat([FromBody] ReserveSeatCommand command)
+        {
+            var result= await _reserveSeatCommandHandler.HandlerAsync(command);
+            if (!result) return BadRequest("No se pudo reservar la butaca.");
+        
+            return Ok("Reserva completada con éxito.");
         }
     }
 }

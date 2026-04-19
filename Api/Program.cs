@@ -2,7 +2,8 @@ using Application.Interfaces;
 using Application.Queries;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Infrastructure.Commands;
+
+using Application.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IGetEventCatalogQueryHandler, GetEventCatalogQueryHandler>();
 builder.Services.AddScoped<ICreateEventCommandHandler, CreateEventCommandHandler>();
+builder.Services.AddScoped<IGetSeatStatusQueryHandler, GetSeatStatusQueryHandler>();
+builder.Services.AddScoped<IReserveSeatCommandHandler, ReserveSeatCommandHandler>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

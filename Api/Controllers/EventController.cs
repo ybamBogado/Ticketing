@@ -1,6 +1,6 @@
-﻿using Application.DTOs;
+using Application.DTOs;
 using Application.Interfaces;
-using Application.Commands;
+using Application.Queries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,7 +22,7 @@ namespace Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EventCatalogDto>>> GetCatalog()
         {
-            var result= await _getEventCatalogQueryHandler.HandlerAsync();
+            var result= await _getEventCatalogQueryHandler.HandlerAsync(new GetEventCatalogQuery());
             return Ok(result);
         }
 

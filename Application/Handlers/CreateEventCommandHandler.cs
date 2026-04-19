@@ -1,4 +1,4 @@
-﻿
+
 using Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.Commands;
+using Infrastructure.Persistence;
+
 
 using Application.Interfaces;
 
@@ -13,8 +15,8 @@ namespace Application.Handlers
 {
     public class CreateEventCommandHandler : ICreateEventCommandHandler
     {
-        private readonly AppDbContext _context;
-        public CreateEventCommandHandler(AppDbContext context)
+        private readonly IAppDbContext _context;
+        public CreateEventCommandHandler(IAppDbContext context)
         {
             _context = context;
         }

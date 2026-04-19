@@ -1,23 +1,25 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Application.DTOs;
 using Application.Interfaces;
+using Application.Queries;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers
 {
     public class GetEventCatalogQueryHandler: IGetEventCatalogQueryHandler
     {
-        private readonly AppDbContext _context;
+        private readonly IAppDbContext _context;
 
-        public GetEventCatalogQueryHandler(AppDbContext context)
+        public GetEventCatalogQueryHandler(IAppDbContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<EventCatalogDto>> HandlerAsync()
+        public async Task<IEnumerable<EventCatalogDto>> HandlerAsync(GetEventCatalogQuery query)
         {
 
             var events = await _context.Events

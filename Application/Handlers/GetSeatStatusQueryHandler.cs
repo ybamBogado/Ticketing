@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using Application.DTOs;
 using Application.Interfaces;
 using Application.Queries;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers
 {
-    internal class GetSeatStatusQueryHandler : IGetSeatStatusQueryHandler
+    public class GetSeatStatusQueryHandler : IGetSeatStatusQueryHandler
     {
-        private readonly AppDbContext _context ;
-        public GetSeatStatusQueryHandler(AppDbContext context)
+        private readonly IAppDbContext _context ;
+        public GetSeatStatusQueryHandler(IAppDbContext context)
         {
             _context = context;
         }
