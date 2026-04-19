@@ -1,6 +1,6 @@
 ﻿using Application.DTOs;
 using Application.Interfaces;
-using Infrastructure.Commands;
+using Application.Commands;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,26 +10,26 @@ namespace Api.Controllers
     [ApiController]
     public class EventController : ControllerBase
     {
-        private readonly IGetEventCatalogQuery _getEventCatalogQuery;
-        private readonly ICreateEventCommand _createEventCommand;
+        private readonly IGetEventCatalogQueryHandler _getEventCatalogQueryHandler;
+        private readonly ICreateEventCommandHandler _createEventCommandHandler;
 
-        public EventController(IGetEventCatalogQuery getEventCatalogQuery, ICreateEventCommand createEventCommand)
+        public EventController(IGetEventCatalogQueryHandler getEventCatalogQueryHandler, ICreateEventCommandHandler createEventCommandHandler)
         {
-            _getEventCatalogQuery = getEventCatalogQuery;
-            _createEventCommand = createEventCommand;
+            _getEventCatalogQueryHandler = getEventCatalogQueryHandler;
+            _createEventCommandHandler = createEventCommandHandler;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EventCatalogDto>>> GetCatalog()
         {
-            var result= await _getEventCatalogQuery.ExecuteAsync();
+            var result= await _getEventCatalogQueryHandler.HandlerAsync();
             return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateEventRequest request)
+        public async Task<IActionResult> Create([FromBody] CreateEventCommand request)
         {
-            var id = await _createEventCommand.ExecuteAsync(request);
+            var id = await _createEventCommandHandler.HandlerAsync(request);
             return Ok(id);
         }
 

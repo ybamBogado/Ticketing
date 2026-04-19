@@ -1,29 +1,31 @@
-﻿using Application.DTOs;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Application.DTOs;
 using Application.Interfaces;
-using Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
 
-namespace Application.Queries
+namespace Application.Handlers
 {
-
-    public class GetEventCatalogQuery : IGetEventCatalogQuery
+    public class GetEventCatalogQueryHandler: IGetEventCatalogQueryHandler
     {
         private readonly AppDbContext _context;
 
-        public GetEventCatalogQuery(AppDbContext context)
+        public GetEventCatalogQueryHandler(AppDbContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<EventCatalogDto>> ExecuteAsync()
+        public async Task<IEnumerable<EventCatalogDto>> HandlerAsync()
         {
-            // 1. Buscamos en la BD los eventos activos
+
             var events = await _context.Events
-                .Include(e => e.Sectors) // Traemos también sus sectores
+                .Include(e => e.Sectors)
                 .Where(e => e.Status == "Active")
                 .ToListAsync();
 
-            // 2. Mapeamos (transformamos) la Entidad pesada al DTO liviano
+
             var catalog = events.Select(e => new EventCatalogDto
             {
                 Id = e.Id,

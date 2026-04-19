@@ -17,8 +17,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
       options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<IGetEventCatalogQuery, GetEventCatalogQuery>();
-builder.Services.AddScoped<ICreateEventCommand, CreateEventCommand>();
+builder.Services.AddScoped<IGetEventCatalogQueryHandler, GetEventCatalogQueryHandler>();
+builder.Services.AddScoped<ICreateEventCommandHandler, CreateEventCommandHandler>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

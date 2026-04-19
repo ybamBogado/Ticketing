@@ -1,15 +1,14 @@
+﻿using Application.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Application.DTOs;
-
 namespace Application.Interfaces
 {
-    public interface IGetEventCatalogQuery
+     public interface ICreateEventCommandHandler
     {
-        Task<IEnumerable<EventCatalogDto>> ExecuteAsync();
+        Task<int> HandlerAsync(CreateEventCommand request);
     }
 }
