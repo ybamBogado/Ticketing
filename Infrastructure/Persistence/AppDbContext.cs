@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Application.Interfaces;
 
 namespace Infrastructure.Persistence
 {
@@ -51,7 +52,7 @@ namespace Infrastructure.Persistence
             {
                 entity.ToTable("SEAT");
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Version).IsRowVersion();
+                entity.Property(e => e.Version).IsConcurrencyToken();
 
                 entity.HasOne(e => e.CurrentReservation)
                     .WithOne(r => r.Seat)
