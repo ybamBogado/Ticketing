@@ -1,8 +1,5 @@
-
 using Domain.Entities;
 using Application.Commands;
-
-
 using Application.Interfaces;
 
 namespace Application.Handlers
@@ -27,9 +24,6 @@ namespace Application.Handlers
             _context.Events.Add(newEvent);
             await _context.SaveChangesAsync();
             return newEvent.Id;
-        }
-        
-
-       
+        }       
     }
 }

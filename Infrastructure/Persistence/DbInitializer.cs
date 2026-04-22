@@ -8,6 +8,37 @@ public static class DbInitializer
 {
     public static void Initialize(AppDbContext context)
     {
+        if (!context.Users.Any())
+        {
+            var bocaPlayers = new string[] 
+            {
+                "Juan Román Riquelme", 
+                "Martín Palermo", 
+                "Carlos Tevez",
+                "Diego Maradona", 
+                "Roberto Abbondanzieri", 
+                "Sebastián Battaglia",
+                "Guillermo Barros Schelotto", 
+                "Hugo Ibarra", 
+                "Rolando Schiavi", 
+                "Mauricio Serna"
+            };
+
+            var users = new List<User>();
+            foreach (var name in bocaPlayers)
+            {
+                var emailPrefix = name.Replace(" ", "").Replace("ó", "o").Replace("á", "a").ToLowerInvariant();
+                users.Add(new User
+                {
+                    Name = name,
+                    Email = $"{emailPrefix}@bocajuniors.com",
+                    PasswordHash = "daleboca123"
+                });
+            }
+            context.Users.AddRange(users);
+            context.SaveChanges();
+        }
+
         if (context.Events.Any())
         {
             return;
