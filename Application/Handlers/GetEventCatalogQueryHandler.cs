@@ -27,7 +27,6 @@ namespace Application.Handlers
                 .Where(e => e.Status == "Active")
                 .ToListAsync();
 
-
             var catalog = events.Select(e => new EventCatalogDto
             {
                 Id = e.Id,
