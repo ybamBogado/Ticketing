@@ -30,6 +30,7 @@ namespace Api.Controllers
         public async Task<ActionResult<IEnumerable<EventCatalogDto>>> GetCatalog()
         {
             var result= await _getEventCatalogQueryHandler.HandlerAsync(new GetEventCatalogQuery());
+            
             return Ok(result);
         }
 
@@ -38,13 +39,15 @@ namespace Api.Controllers
         /// </summary>
         /// <param name="request">Los datos del evento a crear (nombre, fecha, lugar).</param>
         /// <returns>El identificador único (ID) del evento creado.</returns>
-        /// <response code="200">El evento fue creado con éxito y devuelve su ID.</response>
+        /// <response code="201">El evento fue creado con éxito y devuelve su ID.</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Create([FromBody] CreateEventCommand request)
         {
             var id = await _createEventCommandHandler.HandlerAsync(request);
-            return Ok(id);
+            
+            return StatusCode(201, id);
+
         }
 
     }
