@@ -1,17 +1,16 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './Login.css';
 
 export default function Login() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [searchParams] = useSearchParams();
     const navigate = useNavigate();
-    const seatId = searchParams.get('seatId');
-    const eventId = searchParams.get('eventId');
+    const { login } = useAuth();
 
     useEffect(() => {
-        fetch('https://localhost:7285/api/user')
+        fetch('https://localhost:7285/api/v1/users')
             .then(res => res.json())
             .then(data => {
                 setUsers(data);
@@ -19,38 +18,18 @@ export default function Login() {
             })
             .catch(err => {
                 console.error("Error al conectar con el API:", err);
-                // Ponemos usuarios de prueba para que puedas seguir trabajando
                 setUsers([
-                    { id: 1, name: 'Usuario Prueba 1', email: 'test1@test.com' },
-                    { id: 5, name: 'Usuario Prueba 5', email: 'test5@test.com' }
+                    { id: 2, name: 'Juan Román Riquelme', email: 'test1@test.com' },
+                    { id: 5, name: 'Diego Maradona', email: 'test5@test.com' }
                 ]);
                 setLoading(false);
             });
     }, []);
 
-    const handleSelectUser = async (user) => {
-        if (seatId && eventId) {
-            const command = { seatId: parseInt(seatId), userId: user.id };
-            
-            try {
-                const response = await fetch('https://localhost:7285/api/Seat/reserve', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(command)
-                });
-
-                if (response.ok) {
-                    alert(`¡Reserva exitosa para ${user.name}!`);
-                    navigate(`/event/${eventId}`); 
-                } else {
-                    alert("Error al reservar en el servidor.");
-                }
-            } catch (error) {
-                console.error("Error:", error);
-            }
-        } else {
-            navigate('/');
-        }
+    const handleSelectUser = (user) => {
+        login(user);
+        alert(`¡Bienvenido ${user.name}!`);
+        navigate(-1); // Regresar a la página anterior
     };
 
     const handleGoogleLogin = () => {

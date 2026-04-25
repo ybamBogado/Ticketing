@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import Header from '../components/Header';
 import './EventDetail.css';
 
 export default function EventDetail() {
     const { eventId } = useParams();
     const navigate = useNavigate();
+    const { user } = useAuth();
     const [seats, setSeats] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`https://localhost:7285/api/Seat/${eventId}`)
+        fetch(`https://localhost:7285/api/v1/events/${eventId}/seats`)
             .then(res => res.json())
             .then(data => {
                 setSeats(data);
@@ -19,9 +21,34 @@ export default function EventDetail() {
             .catch(err => console.error("Error:", err));
     }, [eventId]);
 
-    const handleReserva = (seatId, currentStatus) => {
+    const handleReserva = async (seatId, currentStatus) => {
         if (currentStatus !== 'Available') return;
-        navigate(`/login?seatId=${seatId}&eventId=${eventId}`);
+        
+        if (!user) {
+            alert("Debes iniciar sesión para reservar una butaca.");
+            navigate('/login');
+            return;
+        }
+
+        const command = { seatId: seatId, userId: user.id };
+
+        try {
+            const response = await fetch('https://localhost:7285/api/v1/reservations', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(command)
+            });
+
+            if (response.ok) {
+                // Actualizamos el estado local para reflejar el cambio de color de inmediato
+                setSeats(seats.map(s => s.id === seatId ? { ...s, status: 'Reserved' } : s));
+            } else {
+                alert("Error al reservar en el servidor.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Error de conexión al intentar reservar.");
+        }
     };
 
     if (loading) return <div className="text-center mt-5 text-white">Cargando asientos...</div>;

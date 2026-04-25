@@ -7,7 +7,7 @@ export default function EventCatalog() {
 
     const [events, setEvents] = useState([]);
     useEffect(() => {
-        fetch('https://localhost:7285/api/event')
+        fetch('https://localhost:7285/api/v1/events')
             .then(response => response.json())
             .then(data => setEvents(data))
     }, []);
