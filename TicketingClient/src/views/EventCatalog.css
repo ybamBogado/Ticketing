@@ -1,0 +1,49 @@
+.body {
+    background-color: #333333;
+    border: 1px solid #444444;
+    color: hsl(0, 0%, 100%);
+}
+
+.event-container {
+    padding: 20px;
+    color: #e0e0e0;
+}
+
+.event-card {
+    background-color: #333333;
+    border: 1px solid #444444;
+    color: #ffffff;
+    transition: transform 0.2s;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    border-color: #ffffff;
+}
+
+/* Efecto para el botón cuando tocas la tarjeta */
+.event-card:hover .btn-detail {
+    border-color: #ffffff;
+}
+
+.event-title {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.event-description {
+    color: #bbbbbb;
+}
+
+.btn-detail {
+    background-color: #333333;
+    border: 3px solid #444444;
+    font-weight: 600;
+}
+
+.btn-detail:hover {
+    border-color: #333333;
+    background-color: #ffffff;
+    color: #000000;
+    box-shadow: 0 0 15px #75545e50;
+}
