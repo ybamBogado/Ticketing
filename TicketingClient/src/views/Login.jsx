@@ -17,7 +17,7 @@ export default function Login() {
                 setLoading(false);
             })
             .catch(err => {
-                console.error("Error al conectar con el API:", err);
+                console.error("usuarios de prueba", err);
                 setUsers([
                     { id: 2, name: 'Juan Román Riquelme', email: 'test1@test.com' },
                     { id: 5, name: 'Diego Maradona', email: 'test5@test.com' }

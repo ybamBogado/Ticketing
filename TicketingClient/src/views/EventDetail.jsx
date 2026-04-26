@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
+import Loader from '../components/Loader';
 import './EventDetail.css';
 
 export default function EventDetail() {
@@ -51,11 +53,21 @@ export default function EventDetail() {
         }
     };
 
-    if (loading) return <div className="text-center mt-5 text-white">Cargando asientos...</div>;
+    if (loading) {
+    return (
+        <>
+        <Header />
+        <Loader />
+        <Footer />
+        </>
+    );
+}
 
     return (
+        <>  
+        <Header />
         <div className="container mt-4 detail-container">
-            <Header />
+            
             <h1 className="text-center my-4 fw-bold">Mapa de Asientos</h1>
 
             <div className="card detail-card shadow-lg p-4">
@@ -82,6 +94,9 @@ export default function EventDetail() {
                     </div>
                 </div>
             </div>
+            
         </div>
+        <Footer />
+        </>
     );
 }
