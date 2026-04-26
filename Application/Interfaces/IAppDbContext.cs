@@ -10,6 +10,7 @@ namespace Application.Interfaces
         DbSet<Event> Events { get; set; }
         DbSet<Seat> Seats { get; set; }
         DbSet<AuditLog> AuditLogs { get; set; }
+        DbSet<Reservation> Reservations { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

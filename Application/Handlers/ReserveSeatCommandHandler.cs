@@ -28,6 +28,18 @@ namespace Application.Handlers
 
             seat.Status = "Reserved";
 
+            var reservation = new Reservation
+            {
+                Id = Guid.NewGuid(),
+                UserId = request.UserId,
+                SeatId = request.SeatId,
+                Status = "Active",
+                ReservedAt = DateTime.UtcNow,
+                ExpiresAt = DateTime.UtcNow.AddMinutes(5)
+            };
+            
+            _context.Reservations.Add(reservation);
+
             var auditEntry = new AuditLog
             {
                 Id = Guid.NewGuid(),

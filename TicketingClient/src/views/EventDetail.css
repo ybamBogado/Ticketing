@@ -1,0 +1,83 @@
+.detail-container {
+    padding: 20px;
+    color: #e0e0e0;
+}
+
+.detail-card {
+    background-color: #333333;
+    border: 1px solid #444444;
+    color: #ffffff;
+    border-radius: 15px;
+}
+
+.escenario {
+    background-color: #1a1a1a;
+    color: #666;
+    font-weight: bold;
+    letter-spacing: 5px;
+    border: 1px solid #333;
+    width: 60%;
+    margin: 0 auto;
+}
+
+.seats-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    padding: 20px;
+}
+
+.seat-box {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border-radius: 6px 6px 12px 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.seat-box:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 10px #ffffff;
+    z-index: 10;
+}
+
+/* Colores basados en los estados de la base de datos  */
+.seat-box.available { background-color: #28a745; color: white; }
+.seat-box.reserved { background-color: #ffc107; color: black; }
+.seat-box.sold { background-color: #dc3545; color: white; cursor: not-allowed; opacity: 0.6; }
+
+/* Para que también funcionen si el estado está en minúsculas  */
+.seat-box.disponible { background-color: #28a745; color: white; }
+.seat-box.reservado { background-color: #ffc107; color: black; }
+.seat-box.vendido { background-color: #dc3545; color: white; }
+
+
+.seat-box.reserved, .seat-box.sold {
+    cursor: not-allowed;
+    opacity: 0.7;        
+}
+
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.legend-dot {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    margin-right: 8px;
+}
+
+.legend-dot.available, .legend-dot.disponible { background-color: #28a745; }
+.legend-dot.reserved, .legend-dot.reservado { background-color: #ffc107; }
+.legend-dot.sold, .legend-dot.vendido { background-color: #dc3545; }
