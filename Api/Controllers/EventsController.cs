@@ -7,14 +7,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/events")]
     [ApiController]
-    public class EventController : ControllerBase
+    public class EventsController : ControllerBase
     {
         private readonly IGetEventCatalogQueryHandler _getEventCatalogQueryHandler;
         private readonly ICreateEventCommandHandler _createEventCommandHandler;
 
-        public EventController(IGetEventCatalogQueryHandler getEventCatalogQueryHandler, ICreateEventCommandHandler createEventCommandHandler)
+        public EventsController(IGetEventCatalogQueryHandler getEventCatalogQueryHandler, ICreateEventCommandHandler createEventCommandHandler)
         {
             _getEventCatalogQueryHandler = getEventCatalogQueryHandler;
             _createEventCommandHandler = createEventCommandHandler;
