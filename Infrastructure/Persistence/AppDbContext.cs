@@ -10,10 +10,9 @@ using Application.Interfaces;
 
 namespace Infrastructure.Persistence
 {
-    public class AppDbContext : DbContext , IAppDbContext
+    public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-        
         public DbSet<AuditLog> AuditLogs { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Reservation> Reservations { get; set; }

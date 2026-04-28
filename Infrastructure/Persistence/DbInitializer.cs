@@ -68,7 +68,6 @@ public static class DbInitializer
             Price = 15000.00m,
             Capacity = 50
         };
-
         context.Sectors.AddRange(plateaSector, popularSector);
         context.SaveChanges(); 
 
@@ -91,7 +90,6 @@ public static class DbInitializer
             else
                 plateaSeatCounter++;
         }
-
         int popularSeatCounter = 1;
         for (int i = 0; i < 50; i++)
         {
@@ -110,7 +108,6 @@ public static class DbInitializer
             else
                 popularSeatCounter++;
         }
-
         context.Seats.AddRange(seats);
         context.SaveChanges();
     }

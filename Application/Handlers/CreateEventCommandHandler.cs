@@ -1,16 +1,21 @@
-using Domain.Entities;
 using Application.Commands;
+using Application.Interfaces.Repositories;
 using Application.Interfaces;
+using Domain.Entities;
 
 namespace Application.Handlers
 {
     public class CreateEventCommandHandler : ICreateEventCommandHandler
     {
-        private readonly IAppDbContext _context;
-        public CreateEventCommandHandler(IAppDbContext context)
+        private readonly IEventRepository _eventRepository;
+        private readonly IUnitOfWork _unitOfWork;
+
+        public CreateEventCommandHandler(IEventRepository eventRepository, IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _eventRepository = eventRepository;
+            _unitOfWork = unitOfWork;
         }
+
         public async Task<int> HandlerAsync(CreateEventCommand request)
         {
             var newEvent = new Event
@@ -20,9 +25,8 @@ namespace Application.Handlers
                 Venue = request.Venue,
                 Status = "Active"
             };
-
-            _context.Events.Add(newEvent);
-            await _context.SaveChangesAsync();
+            _eventRepository.AddEventAsync(newEvent);
+            await _unitOfWork.SaveChangesAsync();
             return newEvent.Id;
         }       
     }

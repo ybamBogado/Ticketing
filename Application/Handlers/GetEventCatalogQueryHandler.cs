@@ -1,31 +1,28 @@
+using Application.DTOs;
+using Application.Queries;
+using Application.Interfaces;
+using Application.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Application.DTOs;
-using Application.Interfaces;
-using Application.Queries;
-using Microsoft.EntityFrameworkCore;
 
 namespace Application.Handlers
 {
     public class GetEventCatalogQueryHandler: IGetEventCatalogQueryHandler
     {
-        private readonly IAppDbContext _context;
+        private readonly IEventRepository _eventRepository;
 
-        public GetEventCatalogQueryHandler(IAppDbContext context)
+        public GetEventCatalogQueryHandler(IEventRepository eventRepository)
         {
-            _context = context;
+            _eventRepository = eventRepository;
         }
 
         public async Task<IEnumerable<EventCatalogDto>> HandlerAsync(GetEventCatalogQuery query)
         {
-
-            var events = await _context.Events
-                .Include(e => e.Sectors)
-                .Where(e => e.Status == "Active")
-                .ToListAsync();
+            var events = await _eventRepository.GetActiveEventsWithSectorsAsync();
 
             var catalog = events.Select(e => new EventCatalogDto
             {
@@ -41,7 +38,6 @@ namespace Application.Handlers
                     Capacity = s.Capacity
                 }).ToList()
             });
-
             return catalog;
         }
     }

@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Queries
+namespace Application.Interfaces.Repositories
 {
-    public class GetSeatStatusQuery
+    public interface IUnitOfWork
     {
-        public int EventId { get; set; }
+        Task SaveChangesAsync();
     }
 }
