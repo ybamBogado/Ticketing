@@ -30,9 +30,7 @@ namespace Api.Controllers
         {
             var query = new GetSeatStatusQuery { EventId = eventId }; 
             var result = await _getSeatStatusQueryHandler.HandlerAsync(query); 
-
             return Ok(result); 
         }
-
     }
 }

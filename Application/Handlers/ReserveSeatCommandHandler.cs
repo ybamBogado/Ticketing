@@ -1,22 +1,31 @@
 using Application.Commands;
 using Application.Interfaces;
 using Domain.Entities;
+using Application.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Threading.Tasks;
 
 namespace Application.Handlers
 {
     public class ReserveSeatCommandHandler : IReserveSeatCommandHandler
     {
-        private readonly IAppDbContext _context;
+        private readonly ISeatRepository _seatRepository;
+        private readonly IReservationRepository _reservationRepository;
+        private readonly IAuditLogRepository _auditLogRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ReserveSeatCommandHandler(IAppDbContext context)
+        public ReserveSeatCommandHandler(ISeatRepository seatRepository, IReservationRepository reservationRepository, IAuditLogRepository auditLogRepository, IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _seatRepository = seatRepository;
+            _reservationRepository = reservationRepository;
+            _auditLogRepository = auditLogRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<bool> HandlerAsync(ReserveSeatCommand request)
         {
-            var seat = await _context.Seats.FindAsync(request.SeatId);
+            var seat = await _seatRepository.GetSeatByIdAsync(request.SeatId);
             if (seat == null)
             {
                 return false;
@@ -25,7 +34,6 @@ namespace Application.Handlers
             {
                 return false;
             }
-
             seat.Status = "Reserved";
 
             var reservation = new Reservation
@@ -36,9 +44,8 @@ namespace Application.Handlers
                 Status = "Active",
                 ReservedAt = DateTime.UtcNow,
                 ExpiresAt = DateTime.UtcNow.AddMinutes(5)
-            };
-            
-            _context.Reservations.Add(reservation);
+            };       
+            await _reservationRepository.AddReservationAsync(reservation);
 
             var auditEntry = new AuditLog
             {
@@ -50,9 +57,8 @@ namespace Application.Handlers
                 Details = $"Reserva tentativa para la butaca ID: {seat.Id}. El estado pasó a Reserved.",
                 CreatedAt = DateTime.UtcNow
             };
-
-            _context.AuditLogs.Add(auditEntry);
-            await _context.SaveChangesAsync();
+            await _auditLogRepository.AddAuditLogAsync(auditEntry);
+            await _unitOfWork.SaveChangesAsync();
             return true;
         }
     }

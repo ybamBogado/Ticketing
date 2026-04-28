@@ -41,14 +41,12 @@ namespace Api.Controllers
         /// <returns>El identificador único (ID) del evento creado.</returns>
         /// <response code="201">El evento fue creado con éxito y devuelve su ID.</response>
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> Create([FromBody] CreateEventCommand request)
         {
             var id = await _createEventCommandHandler.HandlerAsync(request);
             
             return StatusCode(201, id);
-
         }
-
     }
 }

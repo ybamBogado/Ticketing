@@ -7,7 +7,6 @@ namespace Application.Interfaces
 {
     public interface IGetEventCatalogQueryHandler
     {
-        
         Task<IEnumerable<EventCatalogDto>> HandlerAsync(GetEventCatalogQuery query);
     }
 }

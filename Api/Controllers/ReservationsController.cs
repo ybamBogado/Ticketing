@@ -21,17 +21,17 @@ namespace Api.Controllers
         /// </summary>
         /// <param name="command">Los datos de reserva que contienen el ID de la butaca y del usuario.</param>
         /// <returns>Un mensaje de confirmación de reserva.</returns>
-        /// <response code="200">El asiento fue reservado exitosamente.</response>
+        /// <response code="201">El asiento fue reservado exitosamente.</response>
         /// <response code="400">El asiento no se pudo reservar (podría estar ocupado o no existir).</response>
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ReserveSeat([FromBody] ReserveSeatCommand command)
         {
             var result = await _reserveSeatCommandHandler.HandlerAsync(command);
             if (!result) return BadRequest("No se pudo reservar la butaca.");
         
-            return Ok("Reserva completada con éxito.");
+            return StatusCode(StatusCodes.Status201Created, "Reserva completada con éxito.");
         }
     }
 }
