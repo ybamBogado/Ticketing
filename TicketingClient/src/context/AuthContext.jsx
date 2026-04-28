@@ -7,7 +7,6 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Intentar recuperar el usuario del almacenamiento local al cargar
         const savedUser = localStorage.getItem('ticket_user');
         if (savedUser) {
             setUser(JSON.parse(savedUser));

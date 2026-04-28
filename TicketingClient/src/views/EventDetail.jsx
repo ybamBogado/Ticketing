@@ -12,23 +12,31 @@ export default function EventDetail() {
     const { user } = useAuth();
     const [seats, setSeats] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         fetch(`https://localhost:7285/api/v1/events/${eventId}/seats`)
-            .then(res => res.json())
+            .then(res => {
+                if(!res.ok) throw new Error("No se pudieron cargar los asientos");
+                return res.json();
+            })
             .then(data => {
                 setSeats(data);
                 setLoading(false);
             })
-            .catch(err => console.error("Error:", err));
+            .catch(err => {
+                console.error(err);
+                setError("Error al cargar los asientos");
+                setLoading(false);
+            });
     }, [eventId]);
 
     const handleReserva = async (seatId, currentStatus) => {
         if (currentStatus !== 'Available') return;
         
         if (!user) {
-            alert("Debes iniciar sesión para reservar una butaca.");
-            navigate('/login');
+            setError("Debes iniciar sesión para reservar una butaca.");
+            setTimeout(() => navigate('/login'), 2000);
             return;
         }
 
@@ -42,14 +50,14 @@ export default function EventDetail() {
             });
 
             if (response.ok) {
-                // Actualizamos el estado local para reflejar el cambio de color de inmediato
                 setSeats(seats.map(s => s.id === seatId ? { ...s, status: 'Reserved' } : s));
+                setError(null); // Limpiamos cualquier error previo
             } else {
-                alert("Error al reservar en el servidor.");
+                setError("Error al reservar en el servidor.");
             }
         } catch (error) {
             console.error("Error:", error);
-            alert("Error de conexión al intentar reservar.");
+            setError("Error de conexión al intentar reservar.");
         }
     };
 
@@ -68,6 +76,14 @@ export default function EventDetail() {
         <Header />
         <div className="container mt-4 detail-container">
             
+            {/*se ve solo si error no es null*/}
+            {error && (
+                <div className="alert alert-danger alert-dismissible fade show shadow" role="alert">
+                    <strong>¡Atención!</strong> {error}
+                    <button type="button" className="btn-close" onClick={() => setError(null)}></button>
+                </div>
+            )}
+
             <h1 className="text-center my-4 fw-bold">Mapa de Asientos</h1>
 
             <div className="card detail-card shadow-lg p-4">
@@ -87,7 +103,7 @@ export default function EventDetail() {
                         ))}
                     </div>
 
-                    <div className="mt-4 d-flex justify-content-around border-top pt-3">
+                    <div className="mt-4 d-flex flex-column flex-md-row justify-content-around align-items-center border-top pt-3 gap-2">
                         <div className="legend-item text-success"><div className="legend-dot available"></div> Disponible</div>
                         <div className="legend-item text-warning"><div className="legend-dot reserved"></div> Reservado</div>
                         <div className="legend-item text-danger"><div className="legend-dot sold"></div> Vendido</div>

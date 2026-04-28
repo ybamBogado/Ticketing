@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './Login.css';
 
 export default function Login() {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [infoMsg, setInfoMsg] = useState(null);
     const navigate = useNavigate();
     const { login } = useAuth();
 
@@ -28,27 +29,31 @@ export default function Login() {
 
     const handleSelectUser = (user) => {
         login(user);
-        alert(`¡Bienvenido ${user.name}!`);
         navigate(-1); // Regresar a la página anterior
     };
 
     const handleGoogleLogin = () => {
-        alert("Integración con Google: Próximamente...");
+        setInfoMsg("Integración con Google: Próximamente...");
+        setTimeout(() => setInfoMsg(null), 3000)
     };
 
     return (
         <div className="login-page">
             <div className="login-card shadow-lg">
-                <h2 className="text-center mb-4 fw-bold">Bienvenido</h2>
-                <p className="text-muted text-center mb-4">Selecciona una cuenta para continuar</p>
+                <div className="d-flex flex-column align-items-center justify-content-center mb-4">
+                    <Link to="/" title="Ir al inicio">
+                        <img src="/Ticketinador.png" alt="Logo" className="login-card-logo mb-2" />
+                    </Link>
+                    <h2 className="mb-0 fw-bold">Bienvenido</h2>
+                </div>
 
-                {/* Botón de Google (Preparado para el futuro) */}
-                <button className="btn btn-outline-light w-100 mb-4 d-flex align-items-center justify-content-center gap-2 google-btn" onClick={handleGoogleLogin}>
-                    <img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg" alt="Google" />
-                    Continuar con Google
-                </button>
+                {infoMsg && (
+                    <div className="alert alert-info py-2 text-center small shadow-sm">
+                        {infoMsg}
+                    </div>
+                )}
 
-                <div className="divider mb-4"><span>O selecciona un usuario local</span></div>
+                <div className="divider mb-4"><span>Selecciona un usuario local</span></div>
 
                 <div className="user-list">
                     {users.map(u => (
@@ -60,6 +65,18 @@ export default function Login() {
                             <i className="bi bi-chevron-right text-muted"></i>
                         </div>
                     ))}
+                </div>
+                
+                <p className="text-white text-center mb-4">O prueba con una cuenta de Google (Próximamente)</p>
+                <button className="btn btn-outline-light w-100 mb-4 d-flex align-items-center justify-content-center gap-2 google-btn" onClick={handleGoogleLogin}>
+                    <img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg" alt="Google" />
+                    Continuar con Google
+                </button>
+
+                <div className="text-center border-top pt-3">
+                    <Link to="/" className="text-decoration-none text-secondary small back-to-home-link">
+                        ← Volver al inicio
+                    </Link>
                 </div>
             </div>
         </div>

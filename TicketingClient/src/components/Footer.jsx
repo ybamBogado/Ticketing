@@ -10,6 +10,7 @@ export default function Footer() {
                     {/* Columna 1: Redes */}
                     <div className="col-12 col-md-4 mb-4">
                         <h5 className="text-white fw-bold mb-3">Ticketinator 2000</h5>
+                        <img src="/Ticketinador.png" alt="Logo" className="footer-logo mb-3" />
                         <div className="d-flex justify-content-center justify-content-md-start gap-3">
                             <a href="#" className="social-icon"><i className="bi bi-facebook"></i></a>
                             <a href="#" className="social-icon"><i className="bi bi-instagram"></i></a>
@@ -18,7 +19,6 @@ export default function Footer() {
                         </div>
                     </div>
 
-                    {/* Columna 2: Enlaces Legales */}
                     <div className="col-12 col-md-4 mb-4">
                         <h6 className="text-white fw-bold mb-3">Información Legal</h6>
                         <ul className="list-unstyled">
@@ -28,7 +28,6 @@ export default function Footer() {
                         </ul>
                     </div>
 
-                    {/* Columna 3: Contacto y Gestión */}
                     <div className="col-12 col-md-4 mb-4">
                         <h6 className="text-white fw-bold mb-3">Gestión</h6>
                         <ul className="list-unstyled">

@@ -1,6 +1,7 @@
 .header-main {
-    background-color: #0f172a;
-    border-bottom: 1px solid #334155;
+    background: linear-gradient(to right, #0f172a, #1e293b);
+    border-bottom: 1px solid #334155 !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
 }
 
 .logo-container {
@@ -11,10 +12,16 @@
 }
 
 .logo {
-    height: 120px !important; 
+    height: 60px !important;
     width: auto;
     display: block;
-    filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+}
+
+@media (min-width: 768px) {
+    .logo {
+        height: 100px !important;
+    }
 }
 
 .brand-title {

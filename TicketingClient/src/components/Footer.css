@@ -26,6 +26,23 @@
     padding-left: 5px; /* Pequeño efecto de deslizamiento */
 }
 
+.footer-logo {
+    height: 70px;
+    width: auto;
+    filter: grayscale(0) brightness(1.5);
+    opacity: 1;
+    transition: all 0.4s ease;
+    display: block;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+}
+
+.footer-logo:hover {
+    filter: none;
+    opacity: 1;
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
+}
+
 /* Scrollbar opcional para que se vea pro */
 ::-webkit-scrollbar {
     width: 8px;

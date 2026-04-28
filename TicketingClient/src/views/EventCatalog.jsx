@@ -31,8 +31,7 @@ export default function EventCatalog() {
             <Header />
             <div className="container text-center mt-5">
                 <div className="alert alert-danger shadow-sm py-4">
-                    <h4 className="fw-bold">❌ Ups... algo salió mal</h4>
-                    <p>{error}</p>
+                    <h4 className="fw-bold">Error al cargar los eventos</h4>
                     <button className="btn btn-outline-danger mt-2" onClick={() => window.location.reload()}>
                         Reintentar
                     </button>

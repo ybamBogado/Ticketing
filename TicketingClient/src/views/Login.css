@@ -67,3 +67,31 @@
     border-color: rgba(255, 255, 255, 0.2);
     transform: translateX(5px);
 }
+
+.login-card-logo {
+    height: 100px;
+    width: auto;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.287));
+}
+
+.back-to-home-link {
+    transition: all 0.2s ease;
+}
+
+.back-to-home-link:hover {
+    color: white !important;
+}
+
+.login-logo {
+    height: 50px;
+    width: auto;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
+}
+
+.back-to-home {
+    transition: all 0.2s ease;
+}
+
+.back-to-home:hover {
+    color: white !important;
+}

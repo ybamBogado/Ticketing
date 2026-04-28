@@ -12,12 +12,23 @@
 
 .escenario {
     background-color: #1a1a1a;
-    color: #666;
+    color: #888;
     font-weight: bold;
     letter-spacing: 5px;
     border: 1px solid #333;
     width: 60%;
     margin: 0 auto;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 576px) {
+    .escenario {
+        width: 90%;
+        letter-spacing: 1px;
+        font-size: 0.9rem;
+        padding: 5px !important;
+    }
 }
 
 .seats-grid {
