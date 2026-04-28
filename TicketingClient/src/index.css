@@ -14,7 +14,7 @@
 }
 
 body {
-  background-color: rgb(25, 25, 25);
+  background: linear-gradient(135deg, #333333 0%, #000308 100%);
   color: hsl(0, 0%, 100%);
   margin: 0;
   padding: 0;
@@ -22,9 +22,10 @@ body {
   justify-content: center;
   min-width: 100vw;
   min-height: 100vh;
+  background-attachment: fixed;
 }
 
-/* Animación de entrada suave */
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -40,7 +41,6 @@ body {
   animation: fadeInUp 0.6s ease-out forwards;
 }
 
-/* Scrollbar Global Moderno */
 ::-webkit-scrollbar {
   width: 10px;
 }

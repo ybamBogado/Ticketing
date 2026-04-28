@@ -14,9 +14,9 @@ export default function EventCatalog() {
     useEffect(() => {
         fetch('https://localhost:7285/api/v1/events')
             .then(response => {
-            if (!response.ok) throw new Error("No se pudieron cargar los eventos.");
-            return response.json();
-        })
+                if (!response.ok) throw new Error("No se pudieron cargar los eventos.");
+                return response.json();
+            })
             .then(data => setEvents(data))
             .catch(err => {
                 console.error(err);
@@ -26,31 +26,31 @@ export default function EventCatalog() {
     }, []);
 
     if (error) {
-    return (
-        <>
-            <Header />
-            <div className="container text-center mt-5">
-                <div className="alert alert-danger shadow-sm py-4">
-                    <h4 className="fw-bold">Error al cargar los eventos</h4>
-                    <button className="btn btn-outline-danger mt-2" onClick={() => window.location.reload()}>
-                        Reintentar
-                    </button>
+        return (
+            <>
+                <Header />
+                <div className="container text-center mt-5">
+                    <div className="alert alert-danger shadow-sm py-4">
+                        <h4 className="fw-bold">Error al cargar los eventos</h4>
+                        <button className="btn btn-outline-danger mt-2" onClick={() => window.location.reload()}>
+                            Reintentar
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <Footer />
-        </>
-    );
-}
-    
+                <Footer />
+            </>
+        );
+    }
+
     if (loading) {
-    return (
-        <>
-        <Header />
-        <Loader />
-        <Footer />
-        </>
-    );
-}
+        return (
+            <>
+                <Header />
+                <Loader />
+                <Footer />
+            </>
+        );
+    }
 
     return (
         <>

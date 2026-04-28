@@ -59,16 +59,14 @@
     z-index: 10;
 }
 
-/* Colores basados en los estados de la base de datos  */
+
 .seat-box.available { background-color: #28a745; color: white; }
 .seat-box.reserved { background-color: #ffc107; color: black; }
 .seat-box.sold { background-color: #dc3545; color: white; cursor: not-allowed; opacity: 0.6; }
 
-/* Para que también funcionen si el estado está en minúsculas  */
 .seat-box.disponible { background-color: #28a745; color: white; }
 .seat-box.reservado { background-color: #ffc107; color: black; }
 .seat-box.vendido { background-color: #dc3545; color: white; }
-
 
 .seat-box.reserved, .seat-box.sold {
     cursor: not-allowed;

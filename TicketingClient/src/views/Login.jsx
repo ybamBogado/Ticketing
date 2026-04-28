@@ -29,7 +29,7 @@ export default function Login() {
 
     const handleSelectUser = (user) => {
         login(user);
-        navigate(-1); // Regresar a la página anterior
+        navigate(-1);
     };
 
     const handleGoogleLogin = () => {
@@ -60,7 +60,7 @@ export default function Login() {
                         <div key={u.id} className="user-item p-3 mb-2 rounded d-flex align-items-center justify-content-between" onClick={() => handleSelectUser(u)}>
                             <div>
                                 <div className="fw-bold text-white">{u.name}</div>
-                                <div className="small text-muted">{u.email}</div>
+                                <div className="small text-secondary">{u.email}</div>
                             </div>
                             <i className="bi bi-chevron-right text-muted"></i>
                         </div>

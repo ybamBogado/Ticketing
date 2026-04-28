@@ -1,16 +1,10 @@
-.body {
-    background-color: #333333;
-    border: 1px solid #444444;
-    color: hsl(0, 0%, 100%);
-}
-
 .event-container {
     padding: 20px;
     color: #e0e0e0;
 }
 
 .event-card {
-    background-color: #1e293b; /* Un azul pizarra más rico */
+    background-color: #1e293b;
     border: 1px solid #334155;
     color: #ffffff;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -20,7 +14,7 @@
 
 .event-card:hover {
     transform: translateY(-10px);
-    border-color: #6366f1; /* Un toque de color índigo al borde */
+    border-color: #6366f1;
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 0 20px rgba(99, 102, 241, 0.2);
 }
 
@@ -50,11 +44,4 @@
     box-shadow: 0 0 15px #75545e50;
 }
 
-.fade-in-up:nth-child(1) { animation-delay: 0.1s; }
-.fade-in-up:nth-child(2) { animation-delay: 0.2s; }
-.fade-in-up:nth-child(3) { animation-delay: 0.3s; }
-.fade-in-up:nth-child(4) { animation-delay: 0.4s; }
-.fade-in-up:nth-child(5) { animation-delay: 0.5s; }
-.fade-in-up:nth-child(6) { animation-delay: 0.6s; }
-.fade-in-up:nth-child(7) { animation-delay: 0.7s; }
-.fade-in-up:nth-child(8) { animation-delay: 0.8s; }
+

@@ -51,7 +51,7 @@ export default function EventDetail() {
 
             if (response.ok) {
                 setSeats(seats.map(s => s.id === seatId ? { ...s, status: 'Reserved' } : s));
-                setError(null); // Limpiamos cualquier error previo
+                setError(null);
             } else {
                 setError("Error al reservar en el servidor.");
             }
@@ -76,7 +76,6 @@ export default function EventDetail() {
         <Header />
         <div className="container mt-4 detail-container">
             
-            {/*se ve solo si error no es null*/}
             {error && (
                 <div className="alert alert-danger alert-dismissible fade show shadow" role="alert">
                     <strong>¡Atención!</strong> {error}
