@@ -53,7 +53,8 @@ export default function EventDetail() {
                 setSeats(seats.map(s => s.id === seatId ? { ...s, status: 'Reserved' } : s));
                 setError(null);
             } else {
-                setError("Error al reservar en el servidor.");
+                setSeats(seats.map(s => s.id === seatId ? { ...s, status: 'Reserved' } : s));
+                setError("¡Llegaste tarde! Este asiento acaba de ser reservado por otra persona.");
             }
         } catch (error) {
             console.error("Error:", error);
@@ -70,43 +71,6 @@ export default function EventDetail() {
             </>
         );
     }
-
-    const renderSector = (sectorSeats, title) => {
-        const grouped = sectorSeats.reduce((acc, seat) => {
-            if (!acc[seat.rowIdentifier]) acc[seat.rowIdentifier] = [];
-            acc[seat.rowIdentifier].push(seat);
-            return acc;
-        }, {});
-        
-        const sortedKeys = Object.keys(grouped).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
-
-        return (
-            <div className="sector-container">
-                <h4 className="text-center mb-4 text-white-50 fw-bold" style={{ letterSpacing: '2px' }}>{title}</h4>
-                <div className="d-flex flex-column gap-2 align-items-center">
-                    {sortedKeys.map(rowKey => (
-                        <div key={rowKey} className="d-flex justify-content-center gap-2" style={{ minWidth: 'max-content' }}>
-                            <div className="text-muted d-flex align-items-center justify-content-end fw-bold" style={{ width: '60px', fontSize: '0.9rem' }}>
-                                {rowKey}
-                            </div>
-                            {grouped[rowKey]
-                                .sort((a, b) => a.seatNumber - b.seatNumber)
-                                .map(seat => (
-                                    <div
-                                        key={seat.id}
-                                        className={`seat-box ${seat.status.toLowerCase()}`}
-                                        onClick={() => handleReserva(seat.id, seat.status)}
-                                        title={`Fila: ${seat.rowIdentifier} - Asiento: ${seat.seatNumber}`}
-                                    >
-                                        {seat.seatNumber}
-                                    </div>
-                                ))}
-                        </div>
-                    ))}
-                </div>
-            </div>
-        );
-    };
 
     return (
         <>
@@ -126,9 +90,17 @@ export default function EventDetail() {
                     <div className="card-body">
                         <div className="escenario mb-5 text-center p-2 rounded">ESCENARIO</div>
 
-                        <div className="d-flex flex-column flex-xl-row gap-5 justify-content-center mb-4 overflow-auto">
-                            {renderSector(seats.filter(s => s.rowIdentifier.startsWith('PL')), "PLATEA")}
-                            {renderSector(seats.filter(s => s.rowIdentifier.startsWith('PO')), "POPULAR")}
+                        <div className="seats-grid">
+                            {seats.map(seat => (
+                                <div
+                                    key={seat.id}
+                                    className={`seat-box ${seat.status.toLowerCase()}`}
+                                    onClick={() => handleReserva(seat.id, seat.status)}
+                                    title={`Fila: ${seat.rowIdentifier} - Asiento: ${seat.seatNumber}`}
+                                >
+                                    {seat.seatNumber}
+                                </div>
+                            ))}
                         </div>
 
                         <div className="mt-4 d-flex flex-column flex-md-row justify-content-around align-items-center border-top pt-3 gap-2">
