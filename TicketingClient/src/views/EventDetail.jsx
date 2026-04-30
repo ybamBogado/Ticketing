@@ -90,11 +90,11 @@ export default function EventDetail() {
 
         return (
             <div className="sector-container">
-                <h4 className="text-center mb-4 text-white-50 fw-bold" style={{ letterSpacing: '2px' }}>{title}</h4>
+                <h4 className="text-center mb-4 text-white-50 fw-bold sector-title">{title}</h4>
                 <div className="d-flex flex-column gap-2 align-items-center">
                     {sortedKeys.map(rowKey => (
-                        <div key={rowKey} className="d-flex justify-content-center gap-2" style={{ minWidth: 'max-content' }}>
-                            <div className="text-muted d-flex align-items-center justify-content-end fw-bold" style={{ width: '60px', fontSize: '0.9rem' }}>
+                        <div key={rowKey} className="d-flex justify-content-center gap-2 seat-row">
+                            <div className="text-muted d-flex align-items-center justify-content-end fw-bold row-label">
                                 {rowKey}
                             </div>
                             {grouped[rowKey]
