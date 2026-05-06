@@ -34,6 +34,7 @@ builder.Services.AddScoped<IGetEventCatalogQueryHandler, GetEventCatalogQueryHan
 builder.Services.AddScoped<ICreateEventCommandHandler, CreateEventCommandHandler>();
 builder.Services.AddScoped<IGetSeatStatusQueryHandler, GetSeatStatusQueryHandler>();
 builder.Services.AddScoped<IReserveSeatCommandHandler, ReserveSeatCommandHandler>();
+builder.Services.AddScoped<ICreateAuditLogCommandHandler, CreateAuditLogCommandHandler>();
 
 builder.Services.AddCors(options =>
 {

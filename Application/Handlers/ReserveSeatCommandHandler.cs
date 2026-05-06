@@ -35,6 +35,7 @@ namespace Application.Handlers
                 return false;
             }
             seat.Status = "Reserved";
+            seat.Version++;
 
             var reservation = new Reservation
             {

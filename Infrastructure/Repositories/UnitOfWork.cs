@@ -1,4 +1,4 @@
-﻿using Application.Interfaces.Repositories;
+using Application.Interfaces.Repositories;
 using Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;
@@ -20,6 +20,11 @@ namespace Infrastructure.Repositories
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public void Clear()
+        {
+            _context.ChangeTracker.Clear();
         }
     }
 }
