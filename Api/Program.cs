@@ -34,8 +34,11 @@ builder.Services.AddScoped<IGetEventCatalogQueryHandler, GetEventCatalogQueryHan
 builder.Services.AddScoped<ICreateEventCommandHandler, CreateEventCommandHandler>();
 builder.Services.AddScoped<IGetSeatStatusQueryHandler, GetSeatStatusQueryHandler>();
 builder.Services.AddScoped<IReserveSeatCommandHandler, ReserveSeatCommandHandler>();
-builder.Services.AddScoped<ICreateAuditLogCommandHandler, CreateAuditLogCommandHandler>();
+
 builder.Services.AddScoped<IProcessPaymentCommandHandler, ProcessPaymentCommandHandler>();
+
+builder.Services.AddHostedService<Infrastructure.BackgroundJobs.ReservationCleanupWorker>();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAnyOrigin", builder =>
@@ -61,7 +64,6 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception ex)
     {
-        // Si falla por algún motivo (ej: base de datos apagada), lo podemos ver en la consola
         var logger = services.GetRequiredService<ILogger<Program>>();
         logger.LogError(ex, "Ocurrió un error inicializando la base de datos.");
     }

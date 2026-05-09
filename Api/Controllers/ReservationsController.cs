@@ -3,6 +3,7 @@ using Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Application.Interfaces.Repositories;
 
 namespace Api.Controllers
 {
@@ -11,14 +12,14 @@ namespace Api.Controllers
     public class ReservationsController : ControllerBase
     {
         private readonly IReserveSeatCommandHandler _reserveSeatCommandHandler;
-        private readonly ICreateAuditLogCommandHandler _createAuditLogCommandHandler;
+        private readonly IAuditLogRepository _auditLogRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ReservationsController(
-            IReserveSeatCommandHandler reserveSeatCommandHandler,
-            ICreateAuditLogCommandHandler createAuditLogCommandHandler)
+        public ReservationsController(IReserveSeatCommandHandler reserveSeatCommandHandler, IAuditLogRepository auditLogRepository, IUnitOfWork unitOfWork)
         {
             _reserveSeatCommandHandler = reserveSeatCommandHandler;
-            _createAuditLogCommandHandler = createAuditLogCommandHandler;
+            _auditLogRepository = auditLogRepository;
+            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -43,11 +44,10 @@ namespace Api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                await _createAuditLogCommandHandler.HandleAsync(new CreateAuditLogCommand
-                {
-                    UserId = command.UserId,
-                    SeatId = command.SeatId
-                });
+                _unitOfWork.Clear();
+                var auditEntry = Domain.Factories.AuditLogFactory.CreateForConcurrencyConflict(command.UserId, command.SeatId);
+                await _auditLogRepository.AddAuditLogAsync(auditEntry);
+                await _unitOfWork.SaveChangesAsync();
 
                 return Conflict("La butaca acaba de ser reservada por otro usuario. Por favor, seleccione otra.");
             }
