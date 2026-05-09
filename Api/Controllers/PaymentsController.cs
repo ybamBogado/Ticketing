@@ -24,7 +24,6 @@ namespace Api.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ProcessPayment(Guid reservationId, [FromBody] ProcessPaymentCommand command)
         {
-            // Aseguramos que el ID de la ruta coincida con el comando
             command.ReservationId = reservationId;
 
             try
@@ -38,7 +37,6 @@ namespace Api.Controllers
             }
             catch (Exception ex)
             {
-                // El rollback ya se ejecutó en el Handler, acá solo devolvemos el error 500
                 return StatusCode(StatusCodes.Status500InternalServerError, "Ocurrió un error al procesar el pago.");
             }
         }

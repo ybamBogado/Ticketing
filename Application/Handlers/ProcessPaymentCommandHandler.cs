@@ -29,7 +29,7 @@ namespace Application.Handlers
             try
             {
                 var reservation = await _reservationRepository.GetReservationByIdAsync(command.ReservationId);
-                if (reservation == null || reservation.Status != "Reserved")
+                if (reservation == null || reservation.Status != "Reserved" || reservation.ExpiresAt <= DateTime.UtcNow)
                 {
                     await _unitOfWork.RollbackTransactionAsync();
                     return false;
@@ -51,16 +51,7 @@ namespace Application.Handlers
                 }
                 reservation.Status = "Completed";
 
-                var auditEntry = new AuditLog
-                {
-                    Id = Guid.NewGuid(),
-                    UserId = command.UserId,
-                    Action = "ProcessPayment",
-                    EntityType = "Reservation",
-                    EntityId = reservation.Id.ToString(),
-                    Details = $"Pago procesado para la reserva ID: {reservation.Id}. El estado pasó a Paid.",
-                    CreatedAt = DateTime.UtcNow
-                };
+                var auditEntry = Domain.Factories.AuditLogFactory.CreateForPaymentProcessed(command.UserId, reservation.Id);
                 
                 await _auditLogRepository.AddAuditLogAsync(auditEntry);
                 await _unitOfWork.SaveChangesAsync();

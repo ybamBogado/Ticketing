@@ -30,5 +30,13 @@ namespace Infrastructure.Repositories
                 .Include(r => r.User)
                 .FirstOrDefaultAsync(r => r.Id == id);
         }
+
+        public async Task<IEnumerable<Reservation>> GetExpiredReservationsAsync(DateTime currentUtcTime)
+        {
+            return await _context.Reservations
+                .Include(r => r.Seat)
+                .Where(r => r.Status == "Reserved" && r.ExpiresAt <= currentUtcTime)
+                .ToListAsync();
+        }
     }
 }

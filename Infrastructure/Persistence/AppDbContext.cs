@@ -52,11 +52,6 @@ namespace Infrastructure.Persistence
                 entity.ToTable("SEAT");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Version).IsConcurrencyToken();
-
-                entity.HasOne(e => e.CurrentReservation)
-                    .WithOne(r => r.Seat)
-                    .HasForeignKey<Reservation>(r => r.SeatId)
-                    .OnDelete(DeleteBehavior.Restrict);
             });
 
             modelBuilder.Entity<User>(entity =>

@@ -11,5 +11,6 @@ namespace Application.Interfaces.Repositories
     {
         Task AddReservationAsync(Reservation reservation);
         Task<Reservation?> GetReservationByIdAsync(Guid id);
+        Task<IEnumerable<Reservation>> GetExpiredReservationsAsync(DateTime currentUtcTime);
     }
 }

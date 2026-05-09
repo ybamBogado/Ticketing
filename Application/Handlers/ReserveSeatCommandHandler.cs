@@ -42,9 +42,9 @@ namespace Application.Handlers
                 Id = Guid.NewGuid(),
                 UserId = request.UserId,
                 SeatId = request.SeatId,
-                Status = "Reserved", // Cambiado de "Active" a "Reserved"
+                Status = "Reserved",
                 ReservedAt = DateTime.UtcNow,
-                ExpiresAt = DateTime.UtcNow.AddMinutes(5)
+                ExpiresAt = DateTime.UtcNow.AddMinutes(1)
             };       
             await _reservationRepository.AddReservationAsync(reservation);
 
