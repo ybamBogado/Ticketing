@@ -1,4 +1,4 @@
-﻿using Application.Interfaces.Repositories;
+using Application.Interfaces.Repositories;
 using Domain.Entities;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +22,13 @@ namespace Infrastructure.Repositories
         public async Task AddReservationAsync(Reservation reservation)
         {
             await _context.Reservations.AddAsync(reservation);
+        }
+
+        public async Task<Reservation?> GetReservationByIdAsync(Guid id)
+        {
+            return await _context.Reservations
+                .Include(r => r.User)
+                .FirstOrDefaultAsync(r => r.Id == id);
         }
     }
 }

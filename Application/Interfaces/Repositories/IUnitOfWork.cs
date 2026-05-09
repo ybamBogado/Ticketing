@@ -10,5 +10,8 @@ namespace Application.Interfaces.Repositories
     {
         Task SaveChangesAsync();
         void Clear();
+        Task BeginTransactionAsync();
+        Task CommitTransactionAsync();
+        Task RollbackTransactionAsync();
     }
 }
