@@ -38,5 +38,18 @@ namespace Infrastructure.Repositories
                 .Where(r => r.Status == "Reserved" && r.ExpiresAt <= currentUtcTime)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Reservation>> GetReservationsBySeatIdAsync(Guid seatId)
+        {
+            return await _context.Reservations
+                .Where(r => r.SeatId == seatId)
+                .ToListAsync();
+        }
+
+        public async Task DeleteReservationAsync(Reservation reservation)
+        {
+            _context.Reservations.Remove(reservation);
+            await Task.CompletedTask;
+        }
     }
 }

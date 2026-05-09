@@ -37,6 +37,12 @@ namespace Application.Handlers
             seat.Status = "Reserved";
             seat.Version++;
 
+            var existingReservations = await _reservationRepository.GetReservationsBySeatIdAsync(request.SeatId);
+            foreach (var oldRes in existingReservations)
+            {
+                await _reservationRepository.DeleteReservationAsync(oldRes);
+            }
+
             var reservation = new Reservation
             {
                 Id = Guid.NewGuid(),

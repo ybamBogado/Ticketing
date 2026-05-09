@@ -12,7 +12,7 @@ namespace Application.Handlers
     {
         _repository = repository;
     }
-    public async Task<int> HandlerAsync(RegisterUserCommand command)
+    public async Task<int> HandleAsync(RegisterUserCommand command)
     {
         var user = new User {
             Name = command.Name,

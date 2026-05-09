@@ -1,7 +1,9 @@
 using Application.Interfaces;
 using Application.Interfaces.Repositories;
 using Application.Commands;
+using Application.DTOs;
 using Domain.Entities;
+
 
 namespace Application.Handlers
 {
@@ -16,7 +18,7 @@ namespace Application.Handlers
         _tokenService = tokenService;
     }
 
-    public async Task<string> HandlerAsync(LoginUserCommand command)
+    public async Task<LoginResponse> HandleAsync(LoginUserCommand command)
     {
        
         var user = await _userRepository.GetByEmailAsync(command.Email);
@@ -29,7 +31,15 @@ namespace Application.Handlers
         if (!isPasswordValid)
             throw new Exception("Contraseña incorrecta");
 
-        return _tokenService.GenerateToken(user);
+        var token = _tokenService.GenerateToken(user);
+
+        return new LoginResponse
+        {
+            Token = token,
+            UserId = user.Id,
+            Name = user.Name,
+            Email = user.Email
+        };
     }
 }
 

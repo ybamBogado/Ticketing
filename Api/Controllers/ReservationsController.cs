@@ -42,7 +42,7 @@ namespace Api.Controllers
             
                 return StatusCode(StatusCodes.Status201Created, new { message = "Reserva completada con éxito.", reservationId = result.ReservationId });
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex) when (ex is DbUpdateConcurrencyException || ex is DbUpdateException)
             {
                 _unitOfWork.Clear();
                 var auditEntry = Domain.Factories.AuditLogFactory.CreateForConcurrencyConflict(command.UserId, command.SeatId);

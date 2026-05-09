@@ -1,5 +1,6 @@
 using Application.Commands;
 using Application.Interfaces;
+using Application.Interfaces.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers

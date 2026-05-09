@@ -4,7 +4,7 @@ namespace Application.Interfaces.Repositories
 {
     public interface IRegisterUserCommandHandler
     {
-        Task<int> HandlerAsync(RegisterUserCommand command);
+        Task<int> HandleAsync(RegisterUserCommand command);
     }
 }
 

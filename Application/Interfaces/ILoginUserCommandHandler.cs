@@ -1,9 +1,10 @@
 using Application.Commands;
+using Application.DTOs;
 
 namespace Application.Interfaces{
     public interface ILoginUserCommandHandler
 {
-    Task<string> HandlerAsync(LoginUserCommand command);
+    Task<LoginResponse> HandleAsync(LoginUserCommand command);
 }
 
 }
