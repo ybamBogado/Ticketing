@@ -27,7 +27,10 @@ Desarrollar una plataforma integral de venta de tickets. El foco principal fue c
   <img width="1900" height="936" alt="image" src="https://github.com/user-attachments/assets/78c79f94-b3f2-4692-aa56-2e81f7e1976a" />
 
 - **Mapa de Asientos en Tiempo Real**: Visualización del estado de las butacas y sistema de reserva interactivo.
-  <img width="1896" height="935" alt="image" src="https://github.com/user-attachments/assets/be47f20e-b6f0-4b3e-b463-1d47d6f97d3b" />
+
+https://github.com/user-attachments/assets/5035fa42-975a-49ce-be59-35e7558967e8
+
+
 
 - **Autenticación de Usuarios**: Flujo de inicio de sesión gestionado con notificaciones dinámicas.
 <img width="1911" height="952" alt="image" src="https://github.com/user-attachments/assets/72cd59fb-658a-475b-822a-b6fd35d36e0f" />

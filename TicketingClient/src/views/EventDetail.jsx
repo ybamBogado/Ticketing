@@ -67,9 +67,12 @@ export default function EventDetail() {
                 setSelectedSeatId(seatId);
                 setShowPayment(true);
                 setError(null);
+            } else if (response.status === 409) {
+                setError("Este asiento ya fue reservado por otra persona.");
+            } else if (response.status === 400) {
+                setError("La solicitud no es válida (butaca inexistente o ya ocupada).");
             } else {
-                setSeats(seats.map(s => s.id === seatId ? { ...s, status: 'Reserved' } : s));
-                setError("¡Llegaste tarde! Este asiento acaba de ser reservado por otra persona.");
+                setError("Error inesperado al reservar.");
             }
         } catch (error) {
             console.error("Error:", error);

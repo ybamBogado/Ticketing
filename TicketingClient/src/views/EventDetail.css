@@ -54,7 +54,6 @@
 }
 
 .seat-box:hover {
-    transform: scale(1.2);
     box-shadow: 0 0 10px #ffffff;
     z-index: 10;
 }
@@ -90,3 +89,17 @@
 .legend-dot.available, .legend-dot.disponible { background-color: #28a745; }
 .legend-dot.reserved, .legend-dot.reservado { background-color: #ffc107; }
 .legend-dot.sold, .legend-dot.vendido { background-color: #dc3545; }
+
+
+.sector-title {
+    letter-spacing: 2px;
+}
+
+.seat-row {
+    min-width: max-content;
+}
+
+.row-label {
+    width: 60px;
+    font-size: 0.9rem;
+}

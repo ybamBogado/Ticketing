@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,6 +16,5 @@ namespace Domain.Entities
         public int SeatNumber { get; set; }
         public string Status { get; set; }
         public int Version { get; set; }
-        public Reservation? CurrentReservation { get; set; } 
     }
 }
