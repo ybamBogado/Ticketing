@@ -1,40 +1,65 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import API_BASE_URL from '../config';
 import './Login.css';
 
 export default function Login() {
-    const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [infoMsg, setInfoMsg] = useState(null);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [validationErrors, setValidationErrors] = useState({});
+    
     const navigate = useNavigate();
     const { login } = useAuth();
 
-    useEffect(() => {
-        fetch('https://localhost:7285/api/v1/users')
-            .then(res => res.json())
-            .then(data => {
-                setUsers(data);
-                setLoading(false);
-            })
-            .catch(err => {
-                console.error("usuarios de prueba", err);
-                setUsers([
-                    { id: 2, name: 'Juan Román Riquelme', email: 'test1@test.com' },
-                    { id: 5, name: 'Diego Maradona', email: 'test5@test.com' }
-                ]);
-                setLoading(false);
-            });
-    }, []);
-
-    const handleSelectUser = (user) => {
-        login(user);
-        navigate(-1);
+    const validateForm = () => {
+        const errors = {};
+        if (!email.trim()) {
+            errors.email = "El correo es obligatorio";
+        } else if (!email.includes('@')) {
+            errors.email = "Correo inválido (falta el @)";
+        }
+        if (!password) {
+            errors.password = "La contraseña es obligatoria";
+        }
+        return errors;
     };
 
-    const handleGoogleLogin = () => {
-        setInfoMsg("Integración con Google: Próximamente...");
-        setTimeout(() => setInfoMsg(null), 3000)
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const errors = validateForm();
+        if (Object.keys(errors).length > 0) {
+            setValidationErrors(errors);
+            return;
+        }
+
+        setLoading(true);
+        setError(null);
+        setValidationErrors({});
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (!response.ok) {
+                throw new Error('Correo o contraseña incorrectos');
+            }
+
+            const userData = await response.json();
+            
+            login(userData); 
+            navigate('/');
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -45,30 +70,60 @@ export default function Login() {
                         <img src="/Ticketinador.png" alt="Logo" className="login-card-logo mb-2" />
                     </Link>
                     <h2 className="mb-0 fw-bold">Bienvenido</h2>
+                    <p className="text-secondary small">Ingresa tus credenciales para continuar</p>
                 </div>
 
-                {infoMsg && (
-                    <div className="alert alert-info py-2 text-center small shadow-sm">
-                        {infoMsg}
+                {error && (
+                    <div className="alert alert-danger-custom py-2 text-center small shadow-sm mb-3">
+                        {error}
                     </div>
                 )}
 
-                <div className="divider mb-4"><span>Selecciona un usuario local</span></div>
+                <form onSubmit={handleSubmit} noValidate className="mb-4">
+                    <div className="mb-3">
+                        <label className="form-label text-white-50 small">Correo Electrónico</label>
+                        <input 
+                            type="email" 
+                            className={`form-control bg-dark text-white border-secondary ${validationErrors.email ? 'is-invalid-custom' : ''}`} 
+                            placeholder="ejemplo@correo.com"
+                            value={email}
+                            onChange={(e) => {
+                                setEmail(e.target.value);
+                                if (validationErrors.email) setValidationErrors({...validationErrors, email: null});
+                            }}
+                        />
+                        {validationErrors.email && <span className="invalid-feedback-custom">{validationErrors.email}</span>}
+                    </div>
+                    <div className="mb-4">
+                        <label className="form-label text-white-50 small">Contraseña</label>
+                        <input 
+                            type="password" 
+                            className={`form-control bg-dark text-white border-secondary ${validationErrors.password ? 'is-invalid-custom' : ''}`} 
+                            placeholder="••••••••"
+                            value={password}
+                            onChange={(e) => {
+                                setPassword(e.target.value);
+                                if (validationErrors.password) setValidationErrors({...validationErrors, password: null});
+                            }}
+                        />
+                        {validationErrors.password && <span className="invalid-feedback-custom">{validationErrors.password}</span>}
+                    </div>
+                    <button 
+                        type="submit" 
+                        className="btn btn-primary w-100 fw-bold py-2 shadow-sm"
+                        disabled={loading}
+                    >
+                        {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+                    </button>
+                </form>
 
-                <div className="user-list">
-                    {users.map(u => (
-                        <div key={u.id} className="user-item p-3 mb-2 rounded d-flex align-items-center justify-content-between" onClick={() => handleSelectUser(u)}>
-                            <div>
-                                <div className="fw-bold text-white">{u.name}</div>
-                                <div className="small text-secondary">{u.email}</div>
-                            </div>
-                            <i className="bi bi-chevron-right text-muted"></i>
-                        </div>
-                    ))}
+                <div className="text-center mb-4">
+                    <p className="text-white-50 small">¿No tienes cuenta? <Link to="/register" className="text-primary text-decoration-none fw-bold">Regístrate aquí</Link></p>
                 </div>
                 
-                <p className="text-white text-center mb-4">O prueba con una cuenta de Google (Próximamente)</p>
-                <button className="btn btn-outline-light w-100 mb-4 d-flex align-items-center justify-content-center gap-2 google-btn" onClick={handleGoogleLogin}>
+                <div className="divider mb-4"><span>O</span></div>
+
+                <button className="btn btn-outline-light w-100 mb-4 d-flex align-items-center justify-content-center gap-2 google-btn">
                     <img src="https://fonts.gstatic.com/s/i/productlogos/googleg/v6/24px.svg" alt="Google" />
                     Continuar con Google
                 </button>

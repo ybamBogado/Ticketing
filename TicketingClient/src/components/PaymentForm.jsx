@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import API_BASE_URL from '../config';
 
 const PaymentForm = ({ reservationId, userId, onSuccess }) => {
     const [cardNumber, setCardNumber] = useState('');
@@ -12,30 +13,29 @@ const PaymentForm = ({ reservationId, userId, onSuccess }) => {
         setStatus('');
 
         try {
-            const response = await fetch(`https://localhost:7285/api/v1/payments/${reservationId}/pay`, {
+            const response = await fetch(`${API_BASE_URL}/payments/${reservationId}/pay`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    userId: parseInt(userId, 10),
-                    cardNumber: cardNumber,
-                    cardHolderName: cardHolderName
+                    UserId: parseInt(userId, 10),
+                    CardNumber: cardNumber,
+                    CardHolderName: cardHolderName
                 }),
             });
 
             if (response.ok) {
                 const message = await response.text();
-                setStatus(`✅ Éxito: ${message}`);
+                setStatus(` Éxito: ${message}`);
                 if (onSuccess) {
                     setTimeout(() => onSuccess(), 1500);
                 }
             } else {
-                const errorMessage = await response.text();
-                setStatus(`❌ Error: ${errorMessage}`);
+                setStatus(' Error: No se pudo procesar el pago. Revisa los datos de tu tarjeta.');
             }
         } catch (error) {
-            setStatus(`❌ Error de red: ${error.message}`);
+            setStatus(` Error de red: ${error.message}`);
         } finally {
             setLoading(false);
         }

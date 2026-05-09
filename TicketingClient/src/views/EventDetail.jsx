@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import API_BASE_URL from '../config';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Loader from '../components/Loader';
@@ -20,7 +21,7 @@ export default function EventDetail() {
 
     useEffect(() => {
         const fetchSeats = () => {
-            fetch(`https://localhost:7285/api/v1/events/${eventId}/seats`)
+            fetch(`${API_BASE_URL}/events/${eventId}/seats`)
                 .then(res => {
                     if (!res.ok) throw new Error("No se pudieron cargar los asientos");
                     return res.json();
@@ -51,10 +52,10 @@ export default function EventDetail() {
             return;
         }
 
-        const command = { seatId: seatId, userId: user.id };
+        const command = { SeatId: seatId, UserId: user.userId };
 
         try {
-            const response = await fetch('https://localhost:7285/api/v1/reservations', {
+            const response = await fetch(`${API_BASE_URL}/reservations`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(command)
@@ -72,7 +73,7 @@ export default function EventDetail() {
             } else if (response.status === 400) {
                 setError("La solicitud no es válida (butaca inexistente o ya ocupada).");
             } else {
-                setError("Error inesperado al reservar.");
+                setError("Ocurrió un problema al procesar la reserva. Por favor, intenta de nuevo.");
             }
         } catch (error) {
             console.error("Error:", error);
@@ -167,13 +168,13 @@ export default function EventDetail() {
 
                 {showPayment && currentReservationId && (
                     <div className="mt-4" ref={(el) => el && el.scrollIntoView({ behavior: 'smooth' })}>
-                        <PaymentForm 
-                            reservationId={currentReservationId} 
-                            userId={user.id} 
-                            onSuccess={handlePaymentSuccess} 
+                        <PaymentForm
+                            reservationId={currentReservationId}
+                            userId={user.userId}
+                            onSuccess={handlePaymentSuccess}
                         />
-                        <button 
-                            className="btn btn-outline-secondary d-block mx-auto mt-2" 
+                        <button
+                            className="btn btn-outline-secondary d-block mx-auto mt-2"
                             onClick={() => setShowPayment(false)}
                         >
                             Cancelar Pago
