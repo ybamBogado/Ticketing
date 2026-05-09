@@ -45,6 +45,7 @@ namespace Api.Controllers
             catch (Exception ex) when (ex is DbUpdateConcurrencyException || ex is DbUpdateException)
             {
                 _unitOfWork.Clear();
+                
                 var auditEntry = Domain.Factories.AuditLogFactory.CreateForConcurrencyConflict(command.UserId, command.SeatId);
                 await _auditLogRepository.AddAuditLogAsync(auditEntry);
                 await _unitOfWork.SaveChangesAsync();

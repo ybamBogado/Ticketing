@@ -40,7 +40,10 @@ namespace Application.Handlers
             var existingReservations = await _reservationRepository.GetReservationsBySeatIdAsync(request.SeatId);
             foreach (var oldRes in existingReservations)
             {
-                await _reservationRepository.DeleteReservationAsync(oldRes);
+                if (oldRes.ExpiresAt < DateTime.UtcNow)
+                {
+                    await _reservationRepository.DeleteReservationAsync(oldRes);
+                }
             }
 
             var reservation = new Reservation
@@ -65,6 +68,8 @@ namespace Application.Handlers
                 CreatedAt = DateTime.UtcNow
             };
             await _auditLogRepository.AddAuditLogAsync(auditEntry);
+            
+     
             await _unitOfWork.SaveChangesAsync();
             return (true, reservation.Id);
         }

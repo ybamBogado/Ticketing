@@ -172,13 +172,8 @@ export default function EventDetail() {
                             reservationId={currentReservationId}
                             userId={user.userId}
                             onSuccess={handlePaymentSuccess}
+                            onCancel={() => setShowPayment(false)}
                         />
-                        <button
-                            className="btn btn-outline-secondary d-block mx-auto mt-2"
-                            onClick={() => setShowPayment(false)}
-                        >
-                            Cancelar Pago
-                        </button>
                     </div>
                 )}
 

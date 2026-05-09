@@ -67,7 +67,7 @@ namespace Application.Handlers
         
         private async Task<bool> SimulatePaymentGatewayAsync(string cardNumber)
         {
-            await Task.Delay(500);
+            await Task.Delay(8000);
             return !string.IsNullOrEmpty(cardNumber);
         }
     }

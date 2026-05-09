@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import API_BASE_URL from '../config';
 
-const PaymentForm = ({ reservationId, userId, onSuccess }) => {
+const PaymentForm = ({ reservationId, userId, onSuccess, onCancel }) => {
     const [cardNumber, setCardNumber] = useState('');
     const [cardHolderName, setCardHolderName] = useState('');
     const [status, setStatus] = useState('');
@@ -27,66 +27,77 @@ const PaymentForm = ({ reservationId, userId, onSuccess }) => {
 
             if (response.ok) {
                 const message = await response.text();
-                setStatus(` Éxito: ${message}`);
+                setStatus(`Success: ${message}`);
                 if (onSuccess) {
                     setTimeout(() => onSuccess(), 1500);
                 }
             } else {
-                setStatus(' Error: No se pudo procesar el pago. Revisa los datos de tu tarjeta.');
+                setStatus('Error: No se pudo procesar el pago. Revisa los datos.');
             }
         } catch (error) {
-            setStatus(` Error de red: ${error.message}`);
+            setStatus(`Error de red: ${error.message}`);
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div style={{ maxWidth: '400px', margin: '20px auto', padding: '20px', backgroundColor: '#222', border: '1px solid #444', borderRadius: '8px', color: '#fff' }}>
-            <h3 style={{ borderBottom: '1px solid #444', paddingBottom: '10px', marginBottom: '15px' }}>Procesar Pago</h3>
-            <form onSubmit={handlePayment}>
-                <div style={{ marginBottom: '15px' }}>
-                    <label style={{ display: 'block', marginBottom: '5px', color: '#ccc' }}>
-                        Número de Tarjeta:
+        <div className="card shadow-lg border-0 bg-dark text-white p-4 mx-auto" style={{ maxWidth: '450px', borderRadius: '16px' }}>
+            <div className="card-body">
+                <h3 className="text-center mb-4 fw-bold border-bottom pb-3" style={{ borderColor: '#334155 !important' }}>Procesar Pago</h3>
+                
+                <form onSubmit={handlePayment}>
+                    <div className="mb-3">
+                        <label className="form-label text-secondary small text-uppercase fw-bold">Número de Tarjeta</label>
                         <input
                             type="text"
+                            className="form-control bg-secondary bg-opacity-10 border-secondary text-white py-2"
                             value={cardNumber}
                             onChange={(e) => setCardNumber(e.target.value)}
                             placeholder="1234 5678 9101 1121"
                             required
-                            style={{ width: '100%', padding: '10px', marginTop: '5px', backgroundColor: '#333', color: '#fff', border: '1px solid #555', borderRadius: '4px' }}
                         />
-                    </label>
-                </div>
+                    </div>
 
-                <div style={{ marginBottom: '20px' }}>
-                    <label style={{ display: 'block', marginBottom: '5px', color: '#ccc' }}>
-                        Titular de la Tarjeta:
+                    <div className="mb-4">
+                        <label className="form-label text-secondary small text-uppercase fw-bold">Titular de la Tarjeta</label>
                         <input
                             type="text"
+                            className="form-control bg-secondary bg-opacity-10 border-secondary text-white py-2"
                             value={cardHolderName}
                             onChange={(e) => setCardHolderName(e.target.value)}
                             placeholder="Juan Perez"
                             required
-                            style={{ width: '100%', padding: '10px', marginTop: '5px', backgroundColor: '#333', color: '#fff', border: '1px solid #555', borderRadius: '4px' }}
                         />
-                    </label>
-                </div>
+                    </div>
 
-                <button 
-                    type="submit" 
-                    disabled={loading}
-                    style={{ width: '100%', padding: '12px', backgroundColor: '#0d6efd', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
-                >
-                    {loading ? 'Procesando...' : 'Pagar ahora'}
-                </button>
-            </form>
+                    <div className="d-grid gap-2">
+                        <button 
+                            type="submit" 
+                            className="btn btn-primary btn-lg fw-bold py-3 shadow-sm"
+                            disabled={loading}
+                        >
+                            {loading ? (
+                                <><span className="spinner-border spinner-border-sm me-2"></span>Procesando...</>
+                            ) : 'Pagar ahora'}
+                        </button>
+                        
+                        <button
+                            type="button"
+                            className="btn btn-link text-secondary text-decoration-none mt-2"
+                            onClick={onCancel}
+                        >
+                            Cancelar Pago
+                        </button>
+                    </div>
+                </form>
 
-            {status && (
-                <div style={{ marginTop: '15px', padding: '10px', backgroundColor: status.includes('✅') ? '#198754' : '#dc3545', color: '#fff', borderRadius: '4px', textAlign: 'center' }}>
-                    {status}
-                </div>
-            )}
+                {status && (
+                    <div className={`alert mt-4 text-center ${status.includes('Success') ? 'alert-success-custom' : 'alert-danger-custom'}`}>
+                        {status.replace('Success:', '').replace('Error:', '')}
+                    </div>
+                )}
+            </div>
         </div>
     );
 };
