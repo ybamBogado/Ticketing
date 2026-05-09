@@ -2,6 +2,7 @@ using Application.Commands;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api.Controllers
 {
@@ -10,10 +11,14 @@ namespace Api.Controllers
     public class ReservationsController : ControllerBase
     {
         private readonly IReserveSeatCommandHandler _reserveSeatCommandHandler;
+        private readonly ICreateAuditLogCommandHandler _createAuditLogCommandHandler;
 
-        public ReservationsController(IReserveSeatCommandHandler reserveSeatCommandHandler)
+        public ReservationsController(
+            IReserveSeatCommandHandler reserveSeatCommandHandler,
+            ICreateAuditLogCommandHandler createAuditLogCommandHandler)
         {
             _reserveSeatCommandHandler = reserveSeatCommandHandler;
+            _createAuditLogCommandHandler = createAuditLogCommandHandler;
         }
 
         /// <summary>
@@ -26,12 +31,26 @@ namespace Api.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> ReserveSeat([FromBody] ReserveSeatCommand command)
         {
-            var result = await _reserveSeatCommandHandler.HandlerAsync(command);
-            if (!result) return BadRequest("No se pudo reservar la butaca.");
-        
-            return StatusCode(StatusCodes.Status201Created, "Reserva completada con éxito.");
+            try
+            {
+                var result = await _reserveSeatCommandHandler.HandlerAsync(command);
+                if (!result.Success) return BadRequest("No se pudo reservar la butaca.");
+            
+                return StatusCode(StatusCodes.Status201Created, new { message = "Reserva completada con éxito.", reservationId = result.ReservationId });
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                await _createAuditLogCommandHandler.HandleAsync(new CreateAuditLogCommand
+                {
+                    UserId = command.UserId,
+                    SeatId = command.SeatId
+                });
+
+                return Conflict("La butaca acaba de ser reservada por otro usuario. Por favor, seleccione otra.");
+            }
         }
     }
 }

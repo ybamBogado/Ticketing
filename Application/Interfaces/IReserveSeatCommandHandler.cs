@@ -1,9 +1,11 @@
+using System;
 using Application.Commands;
+using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
     public interface IReserveSeatCommandHandler
     {
-        Task<bool> HandlerAsync(ReserveSeatCommand request);
+        Task<(bool Success, Guid? ReservationId)> HandlerAsync(ReserveSeatCommand request);
     }
 }

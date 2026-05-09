@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,5 +9,9 @@ namespace Application.Interfaces.Repositories
     public interface IUnitOfWork
     {
         Task SaveChangesAsync();
+        void Clear();
+        Task BeginTransactionAsync();
+        Task CommitTransactionAsync();
+        Task RollbackTransactionAsync();
     }
 }

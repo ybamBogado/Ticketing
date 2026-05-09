@@ -23,25 +23,26 @@ namespace Application.Handlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<bool> HandlerAsync(ReserveSeatCommand request)
+        public async Task<(bool Success, Guid? ReservationId)> HandlerAsync(ReserveSeatCommand request)
         {
             var seat = await _seatRepository.GetSeatByIdAsync(request.SeatId);
             if (seat == null)
             {
-                return false;
+                return (false, null);
             }
             if (seat.Status != "Available")
             {
-                return false;
+                return (false, null);
             }
             seat.Status = "Reserved";
+            seat.Version++;
 
             var reservation = new Reservation
             {
                 Id = Guid.NewGuid(),
                 UserId = request.UserId,
                 SeatId = request.SeatId,
-                Status = "Active",
+                Status = "Reserved", // Cambiado de "Active" a "Reserved"
                 ReservedAt = DateTime.UtcNow,
                 ExpiresAt = DateTime.UtcNow.AddMinutes(5)
             };       
@@ -59,7 +60,7 @@ namespace Application.Handlers
             };
             await _auditLogRepository.AddAuditLogAsync(auditEntry);
             await _unitOfWork.SaveChangesAsync();
-            return true;
+            return (true, reservation.Id);
         }
     }
 }

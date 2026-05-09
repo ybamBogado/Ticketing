@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Loader from '../components/Loader';
+import PaymentForm from '../components/PaymentForm';
 import './EventDetail.css';
 
 export default function EventDetail() {
@@ -13,6 +14,9 @@ export default function EventDetail() {
     const [seats, setSeats] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [currentReservationId, setCurrentReservationId] = useState(null);
+    const [showPayment, setShowPayment] = useState(false);
+    const [selectedSeatId, setSelectedSeatId] = useState(null);
 
     useEffect(() => {
         const fetchSeats = () => {
@@ -57,7 +61,11 @@ export default function EventDetail() {
             });
 
             if (response.ok) {
+                const data = await response.json();
                 setSeats(seats.map(s => s.id === seatId ? { ...s, status: 'Reserved' } : s));
+                setCurrentReservationId(data.reservationId);
+                setSelectedSeatId(seatId);
+                setShowPayment(true);
                 setError(null);
             } else {
                 setSeats(seats.map(s => s.id === seatId ? { ...s, status: 'Reserved' } : s));
@@ -67,6 +75,13 @@ export default function EventDetail() {
             console.error("Error:", error);
             setError("Error de conexión al intentar reservar.");
         }
+    };
+
+    const handlePaymentSuccess = () => {
+        setSeats(seats.map(s => s.id === selectedSeatId ? { ...s, status: 'Sold' } : s));
+        setShowPayment(false);
+        setCurrentReservationId(null);
+        setSelectedSeatId(null);
     };
 
     if (loading) {
@@ -146,6 +161,22 @@ export default function EventDetail() {
                         </div>
                     </div>
                 </div>
+
+                {showPayment && currentReservationId && (
+                    <div className="mt-4" ref={(el) => el && el.scrollIntoView({ behavior: 'smooth' })}>
+                        <PaymentForm 
+                            reservationId={currentReservationId} 
+                            userId={user.id} 
+                            onSuccess={handlePaymentSuccess} 
+                        />
+                        <button 
+                            className="btn btn-outline-secondary d-block mx-auto mt-2" 
+                            onClick={() => setShowPayment(false)}
+                        >
+                            Cancelar Pago
+                        </button>
+                    </div>
+                )}
 
             </div>
             <Footer />
