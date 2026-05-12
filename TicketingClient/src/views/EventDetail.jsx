@@ -71,7 +71,8 @@ export default function EventDetail() {
             } else if (response.status === 409) {
                 setError("Este asiento ya fue reservado por otra persona.");
             } else if (response.status === 400) {
-                setError("La solicitud no es válida (butaca inexistente o ya ocupada).");
+                const errorText = await response.text();
+                setError(errorText || "La solicitud no es válida (butaca inexistente o ya ocupada).");
             } else {
                 setError("Ocurrió un problema al procesar la reserva. Por favor, intenta de nuevo.");
             }

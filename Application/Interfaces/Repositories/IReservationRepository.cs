@@ -14,5 +14,7 @@ namespace Application.Interfaces.Repositories
         Task<IEnumerable<Reservation>> GetExpiredReservationsAsync(DateTime currentUtcTime);
         Task<IEnumerable<Reservation>> GetReservationsBySeatIdAsync(Guid seatId);
         Task DeleteReservationAsync(Reservation reservation);
+        Task<int> GetActiveReservationsCountAsync(Guid userId);
+        Task<bool> HasRecentReservationAsync(Guid userId, Guid seatId, DateTime since);
     }
 }

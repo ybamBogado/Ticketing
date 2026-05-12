@@ -25,42 +25,37 @@ namespace Application.Handlers
 
         public async Task<bool> HandlerAsync(ProcessPaymentCommand command)
         {
-            await _unitOfWork.BeginTransactionAsync();
             try
             {
                 var reservation = await _reservationRepository.GetReservationByIdAsync(command.ReservationId);
-                if (reservation == null || reservation.Status != "Reserved" || reservation.ExpiresAt <= DateTime.UtcNow)
-                {
-                    await _unitOfWork.RollbackTransactionAsync();
-                    return false;
-                }
-                reservation.Status = "Paid";
+                if (reservation == null || reservation.Status != "Reserved" || reservation.ExpiresAt <= DateTime.UtcNow) {return false;}
 
                 bool paymentSuccess = await SimulatePaymentGatewayAsync(command.CardNumber);
+                if (!paymentSuccess) {return false;}
+                
+                await _unitOfWork.BeginTransactionAsync();
 
-                if (!paymentSuccess)
+                reservation = await _reservationRepository.GetReservationByIdAsync(command.ReservationId);
+                if (reservation == null || reservation.Status != "Reserved" || reservation.ExpiresAt <= DateTime.UtcNow)
                 {
                     await _unitOfWork.RollbackTransactionAsync();
                     return false;
                 }
 
                 var seat = await _seatRepository.GetSeatByIdAsync(reservation.SeatId);
-                if (seat != null)
-                {
-                    seat.Status = "Sold"; 
-                }
+                if (seat != null) {seat.Status = "Sold"; }
                 reservation.Status = "Completed";
 
                 var auditEntry = Domain.Factories.AuditLogFactory.CreateForPaymentProcessed(command.UserId, reservation.Id);
-                
                 await _auditLogRepository.AddAuditLogAsync(auditEntry);
+
                 await _unitOfWork.SaveChangesAsync();
                 await _unitOfWork.CommitTransactionAsync();
                 return true;
             }
             catch (Exception)
             {
-                await _unitOfWork.RollbackTransactionAsync();
+                try { await _unitOfWork.RollbackTransactionAsync(); } catch { }
                 return false;
             }
         }

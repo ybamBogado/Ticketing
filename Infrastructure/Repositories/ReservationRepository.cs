@@ -51,5 +51,17 @@ namespace Infrastructure.Repositories
             _context.Reservations.Remove(reservation);
             await Task.CompletedTask;
         }
+
+        public async Task<int> GetActiveReservationsCountAsync(Guid userId)
+        {
+            return await _context.Reservations
+                .CountAsync(r => r.UserId == userId && r.Status == "Reserved" && r.ExpiresAt > DateTime.UtcNow);
+        }
+
+        public async Task<bool> HasRecentReservationAsync(Guid userId, Guid seatId, DateTime since)
+        {
+            return await _context.Reservations
+                .AnyAsync(r => r.UserId == userId && r.SeatId == seatId && (r.Status == "Expiro" || r.ExpiresAt <= DateTime.UtcNow) && r.ExpiresAt >= since);
+        }
     }
 }
