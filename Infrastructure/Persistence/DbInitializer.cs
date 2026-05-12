@@ -27,12 +27,17 @@ public static class DbInitializer
             var users = new List<User>();
             foreach (var name in bocaPlayers)
             {
-                var emailPrefix = name.Replace(" ", "").Replace("ó", "o").Replace("á", "a").ToLowerInvariant();
+                var emailPrefix = name.Replace(" ", "")
+                                      .Replace("ó", "o")
+                                      .Replace("á", "a")
+                                      .Replace("í", "i")
+                                      .ToLowerInvariant();
+                var hashedPw = BCrypt.Net.BCrypt.HashPassword("daleboca123");
                 users.Add(new User
                 {
                     Name = name,
                     Email = $"{emailPrefix}@bocajuniors.com",
-                    PasswordHash = "daleboca123"
+                    PasswordHash = hashedPw
                 });
             }
             context.Users.AddRange(users);

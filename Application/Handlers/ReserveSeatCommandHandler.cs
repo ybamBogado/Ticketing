@@ -23,19 +23,41 @@ namespace Application.Handlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<(bool Success, Guid? ReservationId)> HandlerAsync(ReserveSeatCommand request)
+        public async Task<(bool Success, string ErrorMessage, Guid? ReservationId)> HandlerAsync(ReserveSeatCommand request)
         {
+            var activeReservationsCount = await _reservationRepository.GetActiveReservationsCountAsync(request.UserId);
+            if (activeReservationsCount >= 6)
+            {
+                return (false, "Has alcanzado el límite máximo de 6 asientos reservados.", null);
+            }
+
+            var oneMinuteAgo = DateTime.UtcNow.AddMinutes(-1);
+            var isCooldownActive = await _reservationRepository.HasRecentReservationAsync(request.UserId, request.SeatId, oneMinuteAgo);
+            if (isCooldownActive)
+            {
+                return (false, "Debes esperar 1 minuto antes de volver a reservar este asiento.", null);
+            }
+
             var seat = await _seatRepository.GetSeatByIdAsync(request.SeatId);
             if (seat == null)
             {
-                return (false, null);
+                return (false, "La butaca no existe.", null);
             }
             if (seat.Status != "Available")
             {
-                return (false, null);
+                return (false, "La butaca no está disponible.", null);
             }
             seat.Status = "Reserved";
             seat.Version++;
+
+            var existingReservations = await _reservationRepository.GetReservationsBySeatIdAsync(request.SeatId);
+            foreach (var oldRes in existingReservations)
+            {
+                if (oldRes.ExpiresAt < DateTime.UtcNow)
+                {
+                    await _reservationRepository.DeleteReservationAsync(oldRes);
+                }
+            }
 
             var reservation = new Reservation
             {
@@ -48,19 +70,11 @@ namespace Application.Handlers
             };       
             await _reservationRepository.AddReservationAsync(reservation);
 
-            var auditEntry = new AuditLog
-            {
-                Id = Guid.NewGuid(),
-                UserId = request.UserId,
-                Action = "ReserveSeat",
-                EntityType = "Seat",
-                EntityId = seat.Id.ToString(),
-                Details = $"Reserva tentativa para la butaca ID: {seat.Id}. El estado pasó a Reserved.",
-                CreatedAt = DateTime.UtcNow
-            };
+            var auditEntry = Domain.Factories.AuditLogFactory.CreateForSeatReservation(request.UserId, seat.Id);
             await _auditLogRepository.AddAuditLogAsync(auditEntry);
+            
             await _unitOfWork.SaveChangesAsync();
-            return (true, reservation.Id);
+            return (true, null, reservation.Id);
         }
     }
 }

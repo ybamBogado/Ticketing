@@ -38,13 +38,14 @@ namespace Api.Controllers
             try
             {
                 var result = await _reserveSeatCommandHandler.HandlerAsync(command);
-                if (!result.Success) return BadRequest("No se pudo reservar la butaca.");
+                if (!result.Success) return BadRequest(result.ErrorMessage ?? "No se pudo reservar la butaca.");
             
                 return StatusCode(StatusCodes.Status201Created, new { message = "Reserva completada con éxito.", reservationId = result.ReservationId });
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception ex) when (ex is DbUpdateConcurrencyException || ex is DbUpdateException)
             {
                 _unitOfWork.Clear();
+                
                 var auditEntry = Domain.Factories.AuditLogFactory.CreateForConcurrencyConflict(command.UserId, command.SeatId);
                 await _auditLogRepository.AddAuditLogAsync(auditEntry);
                 await _unitOfWork.SaveChangesAsync();

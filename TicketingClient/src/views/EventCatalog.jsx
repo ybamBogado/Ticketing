@@ -3,6 +3,7 @@ import Header from '../components/Header.jsx'
 import Footer from '../components/Footer.jsx'
 import Loader from '../components/Loader.jsx'
 import { Link } from 'react-router-dom'
+import API_BASE_URL from '../config'
 import './EventCatalog.css'
 
 export default function EventCatalog() {
@@ -12,7 +13,7 @@ export default function EventCatalog() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch('https://localhost:7285/api/v1/events')
+        fetch(`${API_BASE_URL}/events`)
             .then(response => {
                 if (!response.ok) throw new Error("No se pudieron cargar los eventos.");
                 return response.json();

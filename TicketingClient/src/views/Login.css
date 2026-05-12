@@ -95,3 +95,39 @@
 .back-to-home:hover {
     color: white !important;
 }
+
+/* Estilos Premium para Alertas */
+.alert-success-custom {
+    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    color: white;
+    border: none;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.alert-danger-custom {
+    background: linear-gradient(135deg, #b91c1c 0%, #ef4444 100%);
+    color: white;
+    border: none;
+    font-weight: 500;
+}
+
+/* Mensajes de validación debajo de los campos */
+.invalid-feedback-custom {
+    color: #f87171;
+    font-size: 0.75rem;
+    margin-top: 4px;
+    display: block;
+    font-weight: 500;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.form-control.is-invalid-custom {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.25) !important;
+}
