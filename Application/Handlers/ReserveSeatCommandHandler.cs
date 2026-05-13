@@ -23,29 +23,29 @@ namespace Application.Handlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<(bool Success, string ErrorMessage, Guid? ReservationId)> HandlerAsync(ReserveSeatCommand request)
+        public async Task<(bool Success, string ErrorMessage, Guid? ReservationId, DateTime? ExpiresAt)> HandlerAsync(ReserveSeatCommand request)
         {
             var activeReservationsCount = await _reservationRepository.GetActiveReservationsCountAsync(request.UserId);
             if (activeReservationsCount >= 6)
             {
-                return (false, "Has alcanzado el límite máximo de 6 asientos reservados.", null);
+                return (false, "Has alcanzado el límite máximo de 6 asientos reservados.", null, null);
             }
 
             var oneMinuteAgo = DateTime.UtcNow.AddMinutes(-1);
             var isCooldownActive = await _reservationRepository.HasRecentReservationAsync(request.UserId, request.SeatId, oneMinuteAgo);
             if (isCooldownActive)
             {
-                return (false, "Debes esperar 1 minuto antes de volver a reservar este asiento.", null);
+                return (false, "Debes esperar 1 minuto antes de volver a reservar este asiento.", null, null);
             }
 
             var seat = await _seatRepository.GetSeatByIdAsync(request.SeatId);
             if (seat == null)
             {
-                return (false, "La butaca no existe.", null);
+                return (false, "La butaca no existe.", null, null);
             }
             if (seat.Status != "Available")
             {
-                return (false, "La butaca no está disponible.", null);
+                return (false, "La butaca no está disponible.", null, null);
             }
             seat.Status = "Reserved";
             seat.Version++;
@@ -66,7 +66,8 @@ namespace Application.Handlers
                 SeatId = request.SeatId,
                 Status = "Reserved",
                 ReservedAt = DateTime.UtcNow,
-                ExpiresAt = DateTime.UtcNow.AddMinutes(1)
+            //TIEMPO DE RESERVA
+                ExpiresAt = DateTime.UtcNow.AddMinutes(5)
             };       
             await _reservationRepository.AddReservationAsync(reservation);
 
@@ -74,7 +75,7 @@ namespace Application.Handlers
             await _auditLogRepository.AddAuditLogAsync(auditEntry);
             
             await _unitOfWork.SaveChangesAsync();
-            return (true, null, reservation.Id);
+            return (true, null, reservation.Id, reservation.ExpiresAt);
         }
     }
 }

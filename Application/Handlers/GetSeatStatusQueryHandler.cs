@@ -30,7 +30,8 @@ namespace Application.Handlers
                 SectorId = seat.SectorId,
                 SeatNumber = seat.SeatNumber,
                 RowIdentifier = seat.RowIdentifier,
-                Status = seat.Status 
+                Status = seat.Status,
+                Price = seat.Sector.Price
             });
             return result; 
         }

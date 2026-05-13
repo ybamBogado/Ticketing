@@ -64,7 +64,7 @@ namespace Application.Handlers
                 newEvent.Sectors.Add(sector);
             }
 
-            _eventRepository.AddEventAsync(newEvent);
+            await _eventRepository.AddEventAsync(newEvent);
             await _unitOfWork.SaveChangesAsync();
             return newEvent.Id;
         }       

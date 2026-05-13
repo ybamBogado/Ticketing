@@ -6,6 +6,6 @@ namespace Application.Interfaces
 {
     public interface IReserveSeatCommandHandler
     {
-        Task<(bool Success, string ErrorMessage, Guid? ReservationId)> HandlerAsync(ReserveSeatCommand request);
+        Task<(bool Success, string ErrorMessage, Guid? ReservationId, DateTime? ExpiresAt)> HandlerAsync(ReserveSeatCommand request);
     }
 }

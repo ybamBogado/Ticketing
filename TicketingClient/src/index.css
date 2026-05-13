@@ -100,3 +100,19 @@ body {
     border-color: #ef4444 !important;
     box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.25) !important;
 }
+
+/* Custom Utilities for Ticketing UI */
+.ls-1 { letter-spacing: 1px; }
+.ls-2 { letter-spacing: 2px; }
+.ls-3 { letter-spacing: 3px; }
+.min-w-max { min-width: max-content; }
+.row-label { width: 60px; font-size: 0.85rem; }
+.min-vh-70 { min-height: 70vh; }
+.min-vh-80 { min-height: 80vh; }
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}

@@ -14,5 +14,6 @@ namespace Application.DTOs
         public int SeatNumber { get; set; }
         public string Status { get; set; } = string.Empty;
         public string RowIdentifier { get; set; } = string.Empty;
+        public decimal Price { get; set; }
     }
 }
