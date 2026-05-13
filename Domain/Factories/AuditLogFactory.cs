@@ -60,5 +60,19 @@ namespace Domain.Factories
                 CreatedAt = DateTime.UtcNow
             };
         }
+
+        public static AuditLog CreateForManualCancellation(int userId, Guid reservationId)
+        {
+            return new AuditLog
+            {
+                Id = Guid.NewGuid(),
+                UserId = userId,
+                Action = "Manual Cancellation",
+                EntityType = "Reservation",
+                EntityId = reservationId.ToString(),
+                Details = $"Reserva cancelada manualmente por el usuario {userId}.",
+                CreatedAt = DateTime.UtcNow
+            };
+        }
     }
 }

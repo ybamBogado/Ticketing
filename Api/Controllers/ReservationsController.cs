@@ -14,12 +14,16 @@ namespace Api.Controllers
         private readonly IReserveSeatCommandHandler _reserveSeatCommandHandler;
         private readonly IAuditLogRepository _auditLogRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IReservationRepository _reservationRepository;
+        private readonly ICancelReservationCommandHandler _cancelReservationCommandHandler;
 
-        public ReservationsController(IReserveSeatCommandHandler reserveSeatCommandHandler, IAuditLogRepository auditLogRepository, IUnitOfWork unitOfWork)
+        public ReservationsController(IReserveSeatCommandHandler reserveSeatCommandHandler, IAuditLogRepository auditLogRepository, IUnitOfWork unitOfWork, IReservationRepository reservationRepository, ICancelReservationCommandHandler cancelReservationCommandHandler)
         {
             _reserveSeatCommandHandler = reserveSeatCommandHandler;
             _auditLogRepository = auditLogRepository;
             _unitOfWork = unitOfWork;
+            _reservationRepository = reservationRepository;
+            _cancelReservationCommandHandler = cancelReservationCommandHandler;
         }
 
         /// <summary>
@@ -40,7 +44,7 @@ namespace Api.Controllers
                 var result = await _reserveSeatCommandHandler.HandlerAsync(command);
                 if (!result.Success) return BadRequest(result.ErrorMessage ?? "No se pudo reservar la butaca.");
             
-                return StatusCode(StatusCodes.Status201Created, new { message = "Reserva completada con éxito.", reservationId = result.ReservationId });
+                return StatusCode(StatusCodes.Status201Created, new { message = "Reserva completada con éxito.", reservationId = result.ReservationId, expiresAt = result.ExpiresAt });
             }
             catch (Exception ex) when (ex is DbUpdateConcurrencyException || ex is DbUpdateException)
             {
@@ -51,6 +55,24 @@ namespace Api.Controllers
                 await _unitOfWork.SaveChangesAsync();
 
                 return Conflict("La butaca acaba de ser reservada por otro usuario. Por favor, seleccione otra.");
+            }
+        }
+        [HttpPost("cancel/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> CancelReservation([FromBody] CancelReservationCommand command)
+        {
+            try
+            {
+                var result = await _cancelReservationCommandHandler.HandlerAsync(command);
+                if (!result) return BadRequest("No se pudo cancelar la reserva.");
+                
+                return Ok(new { message = "Reserva cancelada con éxito." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

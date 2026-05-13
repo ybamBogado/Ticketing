@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
+import { useCart } from '../context/CartContext';
 import API_BASE_URL from '../config';
 
 const PaymentForm = ({ reservationId, userId, onSuccess, onCancel }) => {
+    const { removeFromCart } = useCart();
     const [cardNumber, setCardNumber] = useState('');
     const [cardHolderName, setCardHolderName] = useState('');
+    const [expiryDate, setExpiryDate] = useState('');
+    const [cvv, setCvv] = useState('');
     const [status, setStatus] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -21,7 +25,9 @@ const PaymentForm = ({ reservationId, userId, onSuccess, onCancel }) => {
                 body: JSON.stringify({
                     UserId: parseInt(userId, 10),
                     CardNumber: cardNumber,
-                    CardHolderName: cardHolderName
+                    CardHolderName: cardHolderName,
+                    ExpiryDate: expiryDate,
+                    CVV: cvv
                 }),
             });
 
@@ -41,10 +47,15 @@ const PaymentForm = ({ reservationId, userId, onSuccess, onCancel }) => {
         }
     };
 
+    const handleCancel = async () => {
+        await removeFromCart(reservationId);
+        if (onCancel) onCancel();
+    };
+
     return (
-        <div className="card shadow-lg border-0 bg-dark text-white p-4 mx-auto" style={{ maxWidth: '450px', borderRadius: '16px' }}>
+        <div className="card shadow-lg border-0 bg-dark text-white p-4 mx-auto" >
             <div className="card-body">
-                <h3 className="text-center mb-4 fw-bold border-bottom pb-3" style={{ borderColor: '#334155 !important' }}>Procesar Pago</h3>
+                <h3 className="text-center mb-4 fw-bold border-bottom pb-3" >Procesar Pago</h3>
                 
                 <form onSubmit={handlePayment}>
                     <div className="mb-3">
@@ -53,10 +64,53 @@ const PaymentForm = ({ reservationId, userId, onSuccess, onCancel }) => {
                             type="text"
                             className="form-control bg-secondary bg-opacity-10 border-secondary text-white py-2"
                             value={cardNumber}
-                            onChange={(e) => setCardNumber(e.target.value)}
-                            placeholder="1234 5678 9101 1121"
+                            onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, '').slice(0, 16))}
+                            placeholder="16 dígitos de tu tarjeta"
                             required
+                            pattern="\d{16}"
+                            title="El número de tarjeta debe tener 16 dígitos"
+                            inputMode="numeric"
                         />
+                    </div>
+
+                    <div className="row">
+                        <div className="col-md-6 mb-3">
+                            <label className="form-label text-secondary small text-uppercase fw-bold">Vencimiento</label>
+                            <input 
+                                type="text" 
+                                className="form-control bg-secondary bg-opacity-10 border-secondary text-white py-2"
+                                value={expiryDate}
+                                onChange={(e) => {
+                                    let val = e.target.value.replace(/\D/g, '');    
+                                    if (val.length > 2) {
+                                        val = val.slice(0, 2) + '/' + val.slice(2, 4);
+                                    } else {
+                                        val = val.slice(0, 2);
+                                    }
+                                    setExpiryDate(val);
+                                }}
+                                placeholder="MM/YY"
+                                required 
+                                pattern="(0[1-9]|1[0-2])\/\d{2}"
+                                title="Formato requerido: MM/YY (ej: 12/25)"
+                                inputMode="numeric"
+                                maxLength="5"
+                            />
+                        </div>
+                        <div className="col-md-6 mb-3">
+                            <label className="form-label text-secondary small text-uppercase fw-bold">CVV</label>
+                            <input 
+                                type="password" 
+                                className="form-control bg-secondary bg-opacity-10 border-secondary text-white py-2"
+                                value={cvv}
+                                onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').slice(0, 3))}
+                                placeholder="123"
+                                required 
+                                pattern="\d{3}"
+                                title="El CVV debe tener 3 dígitos"
+                                inputMode="numeric"
+                            />
+                        </div>
                     </div>
 
                     <div className="mb-4">
@@ -84,9 +138,10 @@ const PaymentForm = ({ reservationId, userId, onSuccess, onCancel }) => {
                         
                         <button
                             type="button"
-                            className="btn btn-link text-secondary text-decoration-none mt-2"
-                            onClick={onCancel}
+                            className="btn btn-danger btn-sm border-0 mt-2 fw-bold text-uppercase"
+                            onClick={handleCancel}
                         >
+                            <i className="bi bi-x-circle me-2"></i>
                             Cancelar Pago
                         </button>
                     </div>

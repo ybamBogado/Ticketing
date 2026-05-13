@@ -52,13 +52,13 @@ namespace Infrastructure.Repositories
             await Task.CompletedTask;
         }
 
-        public async Task<int> GetActiveReservationsCountAsync(Guid userId)
+        public async Task<int> GetActiveReservationsCountAsync(int userId)
         {
             return await _context.Reservations
                 .CountAsync(r => r.UserId == userId && r.Status == "Reserved" && r.ExpiresAt > DateTime.UtcNow);
         }
 
-        public async Task<bool> HasRecentReservationAsync(Guid userId, Guid seatId, DateTime since)
+        public async Task<bool> HasRecentReservationAsync(int userId, Guid seatId, DateTime since)
         {
             return await _context.Reservations
                 .AnyAsync(r => r.UserId == userId && r.SeatId == seatId && (r.Status == "Expiro" || r.ExpiresAt <= DateTime.UtcNow) && r.ExpiresAt >= since);
