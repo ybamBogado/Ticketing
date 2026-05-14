@@ -18,7 +18,7 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<Seat> GetSeatByIdAsync(Guid seatId)
+        public async Task<Seat?> GetSeatByIdAsync(Guid seatId)
         {
             return await _context.Seats.FindAsync(seatId);
         }

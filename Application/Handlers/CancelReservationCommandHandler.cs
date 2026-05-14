@@ -12,11 +12,7 @@ namespace Application.Handlers
         private readonly IAuditLogRepository _auditLogRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CancelReservationCommandHandler(
-            IReservationRepository reservationRepository,
-            ISeatRepository seatRepository,
-            IAuditLogRepository auditLogRepository,
-            IUnitOfWork unitOfWork)
+        public CancelReservationCommandHandler(IReservationRepository reservationRepository, ISeatRepository seatRepository, IAuditLogRepository auditLogRepository, IUnitOfWork unitOfWork)
         {
             _reservationRepository = reservationRepository;
             _seatRepository = seatRepository;
@@ -38,9 +34,7 @@ namespace Application.Handlers
             
             var auditLog = AuditLogFactory.CreateForManualCancellation(request.UserId, request.ReservationId);
             await _auditLogRepository.AddAuditLogAsync(auditLog);
-
             await _reservationRepository.DeleteReservationAsync(reservation);
-
             await _unitOfWork.SaveChangesAsync();
             return true;
         }

@@ -17,10 +17,12 @@ namespace Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task SaveChangesAsync()
-        {
+
+        public async Task SaveChangesAsync() 
+        { 
             await _context.SaveChangesAsync();
         }
+
         public void Clear()
         {
             _context.ChangeTracker.Clear();
@@ -32,11 +34,13 @@ namespace Infrastructure.Repositories
         {
             _transaction = await _context.Database.BeginTransactionAsync();
         }
+
         public async Task CommitTransactionAsync()
         {
             await _transaction.CommitAsync();
             await _transaction.DisposeAsync();
         }
+
         public async Task RollbackTransactionAsync()
         {
             await _transaction.RollbackAsync();

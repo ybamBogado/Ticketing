@@ -34,7 +34,6 @@ namespace Application.Handlers
                 if (!paymentSuccess) {return false;}
                 
                 await _unitOfWork.BeginTransactionAsync();
-
                 reservation = await _reservationRepository.GetReservationByIdAsync(command.ReservationId);
                 if (reservation == null || reservation.Status != "Reserved" || reservation.ExpiresAt <= DateTime.UtcNow)
                 {

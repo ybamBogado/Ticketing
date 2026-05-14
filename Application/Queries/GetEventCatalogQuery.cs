@@ -2,7 +2,5 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Queries
 {
-    public class GetEventCatalogQuery 
-    {
-    }
+    public class GetEventCatalogQuery {}
 }

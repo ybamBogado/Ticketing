@@ -17,7 +17,7 @@ const PaymentForm = ({ reservationId, userId, onSuccess, onCancel }) => {
         setStatus('');
 
         try {
-            const response = await fetch(`${API_BASE_URL}/payments/${reservationId}/pay`, {
+            const response = await fetch(`${API_BASE_URL}/reservations/${reservationId}/payments`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

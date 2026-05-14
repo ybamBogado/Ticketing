@@ -69,7 +69,6 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-
 builder.Services.AddHostedService<Infrastructure.BackgroundJobs.ReservationCleanupWorker>();
 
 builder.Services.AddCors(options =>
