@@ -47,8 +47,8 @@ export const CartProvider = ({ children }) => {
 
         try {
            
-            await fetch(`${API_BASE_URL}/reservations/cancel/${reservationId}`, {
-                method: 'POST',
+            await fetch(`${API_BASE_URL}/reservations/${reservationId}`, {
+                method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ 
                     ReservationId: reservationId, 

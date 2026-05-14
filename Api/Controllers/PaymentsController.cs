@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Api.Controllers
 {
-    [Route("api/v1/payments")]
+    [Route("api/v1/reservations/{reservationId}/payments")]
     [ApiController]
     public class PaymentsController : ControllerBase
     {
@@ -18,7 +18,7 @@ namespace Api.Controllers
             _processPaymentCommandHandler = processPaymentCommandHandler;
         }
 
-        [HttpPost("{reservationId}/pay")]
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -35,7 +35,7 @@ namespace Api.Controllers
 
                 return Ok("Pago procesado con éxito. Asiento vendido.");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Ocurrió un error al procesar el pago.");
             }

@@ -59,17 +59,27 @@
 }
 
 
-.seat-box.available { background-color: #28a745; color: white; }
-.seat-box.reserved { background-color: #ffc107; color: black; }
-.seat-box.sold { background-color: #dc3545; color: white; cursor: not-allowed; opacity: 0.6; }
+.seat-box.available {
+    background-color: #28a745;
+    color: white;
+}
 
-.seat-box.disponible { background-color: #28a745; color: white; }
-.seat-box.reservado { background-color: #ffc107; color: black; }
-.seat-box.vendido { background-color: #dc3545; color: white; }
+.seat-box.reserved {
+    background-color: #ffc107;
+    color: black;
+}
 
-.seat-box.reserved, .seat-box.sold {
+.seat-box.sold {
+    background-color: #dc3545;
+    color: white;
     cursor: not-allowed;
-    opacity: 0.7;        
+    opacity: 0.6;
+}
+
+.seat-box.reserved,
+.seat-box.sold {
+    cursor: not-allowed;
+    opacity: 0.7;
 }
 
 
@@ -86,9 +96,17 @@
     margin-right: 8px;
 }
 
-.legend-dot.available, .legend-dot.disponible { background-color: #28a745; }
-.legend-dot.reserved, .legend-dot.reservado { background-color: #ffc107; }
-.legend-dot.sold, .legend-dot.vendido { background-color: #dc3545; }
+.legend-dot.available {
+    background-color: #28a745;
+}
+
+.legend-dot.reserved {
+    background-color: #ffc107;
+}
+
+.legend-dot.sold {
+    background-color: #dc3545;
+}
 
 
 .sector-title {

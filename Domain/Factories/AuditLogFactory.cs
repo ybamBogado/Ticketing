@@ -28,7 +28,7 @@ namespace Domain.Factories
                 Action = "Process Payment",
                 EntityType = "Reservation",
                 EntityId = reservationId.ToString(),
-                Details = $"Pago procesado para la reserva ID: {reservationId}. El estado pasó a Paid.",
+                Details = $"Pago procesado para la reserva ID: {reservationId}. El estado pasó a pagada.",
                 CreatedAt = DateTime.UtcNow
             };
         }
@@ -71,6 +71,20 @@ namespace Domain.Factories
                 EntityType = "Reservation",
                 EntityId = reservationId.ToString(),
                 Details = $"Reserva cancelada manualmente por el usuario {userId}.",
+                CreatedAt = DateTime.UtcNow
+            };
+        }
+
+        public static AuditLog CreateForFailedReservationAttempt(int userId, Guid seatId, string reason)
+        {
+            return new AuditLog
+            {
+                Id = Guid.NewGuid(),
+                UserId = userId,
+                Action = "Failed Reservation Attempt",
+                EntityType = "Seat",
+                EntityId = seatId.ToString(),
+                Details = $"Intento de reserva fallido para butaca {seatId}. Razón: {reason}",
                 CreatedAt = DateTime.UtcNow
             };
         }

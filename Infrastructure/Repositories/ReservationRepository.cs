@@ -61,7 +61,7 @@ namespace Infrastructure.Repositories
         public async Task<bool> HasRecentReservationAsync(int userId, Guid seatId, DateTime since)
         {
             return await _context.Reservations
-                .AnyAsync(r => r.UserId == userId && r.SeatId == seatId && (r.Status == "Expiro" || r.ExpiresAt <= DateTime.UtcNow) && r.ExpiresAt >= since);
+                .AnyAsync(r => r.UserId == userId && r.SeatId == seatId && (r.Status == "Expired" || r.ExpiresAt <= DateTime.UtcNow) && r.ExpiresAt >= since);
         }
     }
 }

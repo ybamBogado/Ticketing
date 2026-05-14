@@ -1,6 +1,5 @@
 using Domain.Entities;
 using Infrastructure.Persistence;
-using Domain.Entities;
 
 namespace Ticketinador2000.Infrastructure.Persistence;
 

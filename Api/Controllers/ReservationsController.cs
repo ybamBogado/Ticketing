@@ -57,7 +57,16 @@ namespace Api.Controllers
                 return Conflict("La butaca acaba de ser reservada por otro usuario. Por favor, seleccione otra.");
             }
         }
-        [HttpPost("cancel/{id}")]
+
+        /// <summary>
+        /// Cancela una reserva existente.
+        /// </summary>
+        /// <param name="command">Los datos de reserva que contienen el ID de la reserva.</param>
+        /// <returns>Un mensaje de confirmación de cancelación.</returns>
+        /// <response code="200">La reserva fue cancelada exitosamente.</response>
+        /// <response code="400">La reserva no se pudo cancelar (podría estar expirada o no existir).</response>
+        /// <response code="404">La reserva no existe.</response>
+        [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -67,7 +76,6 @@ namespace Api.Controllers
             {
                 var result = await _cancelReservationCommandHandler.HandlerAsync(command);
                 if (!result) return BadRequest("No se pudo cancelar la reserva.");
-                
                 return Ok(new { message = "Reserva cancelada con éxito." });
             }
             catch (Exception ex)

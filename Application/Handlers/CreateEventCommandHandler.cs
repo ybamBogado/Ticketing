@@ -52,15 +52,14 @@ namespace Application.Handlers
                         Status = "Available",
                         Version = 0
                     });
-
                     currentSeatInRow++;
+
                     if (currentSeatInRow > seatsPerRow)
                     {
                         currentSeatInRow = 1;
                         currentRow++; 
                     }
                 }
-
                 newEvent.Sectors.Add(sector);
             }
 

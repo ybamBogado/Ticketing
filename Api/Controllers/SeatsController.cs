@@ -3,7 +3,6 @@ using Application.Interfaces;
 using Application.Queries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Application.Commands;
 
 namespace Api.Controllers
 {

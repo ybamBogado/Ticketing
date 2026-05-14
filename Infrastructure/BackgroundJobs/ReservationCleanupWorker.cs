@@ -62,16 +62,17 @@ namespace Infrastructure.BackgroundJobs
                 await unitOfWork.BeginTransactionAsync();
                 try
                 {
-                    reservation.Status = "Expiro";
+                    reservation.Status = "Expired";
 
                     if (reservation.Seat != null)
                     {
                         reservation.Seat.Status = "Available";
+                        reservation.Seat.Version++;
                     }
 
                     var auditLog = Domain.Factories.AuditLogFactory.CreateForAutoCancellation(reservation.UserId, reservation.Id);
-
                     await auditRepo.AddAuditLogAsync(auditLog);
+
                     await unitOfWork.SaveChangesAsync();
                     await unitOfWork.CommitTransactionAsync();
                     hasChanges = true;
