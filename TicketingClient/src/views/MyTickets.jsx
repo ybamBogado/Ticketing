@@ -69,7 +69,7 @@ export default function MyTickets() {
                                             </div>
                                             <div className="text-end">
                                                 <small className="text-muted d-block text-uppercase small fw-bold">Asiento</small>
-                                                <span className="h4 mb-0 fw-bold text-white">{ticket.seatNumber}</span>
+                                                <span className="h4 mb-0 fw-bold ">{ticket.seatNumber}</span>
                                             </div>
                                         </div>
                                         <div className="mb-3">
