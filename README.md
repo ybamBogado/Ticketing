@@ -38,7 +38,8 @@ Desarrollar una plataforma integral de venta de tickets. El foco principal fue c
 <img width="1698" height="504" alt="image" src="https://github.com/user-attachments/assets/434c6782-7a55-4c25-be3f-0561b491ed65" />
 
 - **Vista de entradas del usuario**: 
-<img width="1706" height="499" alt="image" src="https://github.com/user-attachments/assets/133d004d-1f6f-426b-8915-28001513df05" />
+<img width="1694" height="490" alt="image" src="https://github.com/user-attachments/assets/360f972b-aa05-43b9-a974-eee8ad988f28" />
+
 
 
 - **Autenticación de Usuarios**: Flujo de inicio de sesión gestionado con notificaciones dinámicas.
