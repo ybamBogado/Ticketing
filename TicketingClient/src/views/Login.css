@@ -10,9 +10,9 @@
     padding: 2.5rem;
     width: 100%;
     max-width: 400px;
-    background-color: #1e293b;
-    border: 1px solid #334155;
-    color: #ffffff;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
     border-radius: 16px;
     overflow: hidden;
 }
@@ -33,7 +33,7 @@
 .divider {
     text-align: center;
     position: relative;
-    color: #d1d1d1;
+    color: var(--text-muted);
     font-size: 0.8rem;
 }
 
@@ -44,7 +44,7 @@
     left: 0;
     width: 100%;
     height: 1px;
-    background: #333;
+    background: var(--border-color);
     z-index: 1;
 }
 
@@ -53,6 +53,7 @@
     padding: 0 10px;
     position: relative;
     z-index: 2;
+    background-color: var(--bg-card);
 }
 
 .user-item {
@@ -76,10 +77,11 @@
 
 .back-to-home-link {
     transition: all 0.2s ease;
+    color: var(--text-muted);
 }
 
 .back-to-home-link:hover {
-    color: white !important;
+    color: var(--text-main) !important;
 }
 
 .login-logo {
@@ -93,28 +95,14 @@
 }
 
 .back-to-home:hover {
-    color: white !important;
+    color: var(--text-main) !important;
 }
 
-/* Estilos Premium para Alertas */
-.alert-success-custom {
-    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-    color: white;
-    border: none;
-    font-weight: 600;
-    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-}
 
-.alert-danger-custom {
-    background: linear-gradient(135deg, #b91c1c 0%, #ef4444 100%);
-    color: white;
-    border: none;
-    font-weight: 500;
-}
 
 /* Mensajes de validación debajo de los campos */
-.invalid-feedback-custom {
-    color: #f87171;
+.invalid-feedback {
+    color: var(--error-light);
     font-size: 0.75rem;
     margin-top: 4px;
     display: block;
@@ -128,6 +116,6 @@
 }
 
 .form-control.is-invalid-custom {
-    border-color: #ef4444 !important;
+    border-color: var(--error) !important;
     box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.25) !important;
-}
+}

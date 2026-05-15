@@ -16,6 +16,7 @@ export default function EventDetail() {
     const [seats, setSeats] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);
 
     useEffect(() => {
         const fetchSeats = () => {
@@ -66,7 +67,7 @@ export default function EventDetail() {
 
             if (response.ok) {
                 const data = await response.json();
-                const seatInfo = seats.find(s => s.id === seatId); // Buscamos la info del asiento
+                const seatInfo = seats.find(s => s.id === seatId); 
                 
                 setSeats(seats.map(s => s.id === seatId ? { ...s, status: 'Reserved' } : s));
 
@@ -80,6 +81,8 @@ export default function EventDetail() {
                 });
 
                 setError(null);
+                setSuccessMessage(`¡Butaca ${seatInfo?.rowIdentifier}-${seatInfo?.seatNumber} agregada al carrito!`);
+                setTimeout(() => setSuccessMessage(null), 2000); 
             } else if (response.status === 409) {
                 setError("Este asiento ya fue reservado por otra persona.");
             } else if (response.status === 400) {
@@ -155,6 +158,13 @@ export default function EventDetail() {
                     <div className="alert alert-danger alert-dismissible fade show shadow" role="alert">
                         <strong>¡Atención!</strong> {error}
                         <button type="button" className="btn-close" onClick={() => setError(null)}></button>
+                    </div>
+                )}
+
+                {successMessage && (
+                    <div className="alert alert-success alert-dismissible fade show shadow" role="alert">
+                        <strong>¡Éxito!</strong> {successMessage}
+                        <button type="button" className="btn-close" onClick={() => setSuccessMessage(null)}></button>
                     </div>
                 )}
 

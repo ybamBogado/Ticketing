@@ -1,5 +1,6 @@
 using Application.Commands;
 using Application.Interfaces;
+using Application.Queries;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,14 +17,16 @@ namespace Api.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IReservationRepository _reservationRepository;
         private readonly ICancelReservationCommandHandler _cancelReservationCommandHandler;
+        private readonly IGetUserTicketsQueryHandler _getUserTicketsQueryHandler;
 
-        public ReservationsController(IReserveSeatCommandHandler reserveSeatCommandHandler, IAuditLogRepository auditLogRepository, IUnitOfWork unitOfWork, IReservationRepository reservationRepository, ICancelReservationCommandHandler cancelReservationCommandHandler)
+        public ReservationsController(IReserveSeatCommandHandler reserveSeatCommandHandler, IAuditLogRepository auditLogRepository, IUnitOfWork unitOfWork, IReservationRepository reservationRepository, ICancelReservationCommandHandler cancelReservationCommandHandler, IGetUserTicketsQueryHandler getUserTicketsQueryHandler)
         {
             _reserveSeatCommandHandler = reserveSeatCommandHandler;
             _auditLogRepository = auditLogRepository;
             _unitOfWork = unitOfWork;
             _reservationRepository = reservationRepository;
             _cancelReservationCommandHandler = cancelReservationCommandHandler;
+            _getUserTicketsQueryHandler = getUserTicketsQueryHandler;
         }
 
         /// <summary>
@@ -82,6 +85,21 @@ namespace Api.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Obtiene todas las entradas compradas por un usuario específico.
+        /// </summary>
+        /// <param name="userId">El ID del usuario.</param>
+        /// <returns>Una lista de reservas con estado 'Sold' incluyendo detalles del evento.</returns>
+        /// <response code="200">Retorna la lista de entradas del usuario.</response>
+        [HttpGet("user/{userId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetUserTickets(int userId)
+        {
+            var query = new GetUserTicketsQuery { UserId = userId };
+            var result = await _getUserTicketsQueryHandler.HandlerAsync(query);
+            return Ok(result);
         }
     }
 }

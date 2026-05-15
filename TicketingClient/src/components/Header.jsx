@@ -55,7 +55,13 @@ export default function Header() {
                         </div>
                     )}
 
-                    <div className="text-center text-md-end">
+                    <div className="text-center text-md-end d-flex gap-2">
+                        {user && (
+                            <button onClick={() => navigate('/mis-entradas')} className="btn btn-primary px-3 fw-bold text-uppercase small text-dark">
+                                <i className="bi bi-ticket-perforated me-2"></i>
+                                Mis Entradas
+                            </button>
+                        )}
                         <button onClick={handleAuthClick} className="btn btn-outline-light px-4  fw-bold text-uppercase small">
                             {user ? `Salir (${user.name})` : "Entrar"}
                         </button>

@@ -14,8 +14,8 @@ using Ticketinador2000.Infrastructure.Persistence;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -24,6 +24,7 @@ builder.Services.AddSwaggerGen(options =>
     var xmlPath = System.IO.Path.Combine(AppContext.BaseDirectory, xmlFile);
     options.IncludeXmlComments(xmlPath);
 });
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
       options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -45,6 +46,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IRegisterUserCommandHandler, RegisterUserCommandHandler>();
 builder.Services.AddScoped<ILoginUserCommandHandler, LoginUserCommandHandler>();
 builder.Services.AddScoped<ICancelReservationCommandHandler, CancelReservationCommandHandler>();
+builder.Services.AddScoped<IGetUserTicketsQueryHandler, GetUserTicketsQueryHandler>();
 
 // Configuración de JWT
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -113,7 +115,6 @@ app.UseCors("AllowAnyOrigin");
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-app.UseAuthorization();
 
 app.MapControllers();
 

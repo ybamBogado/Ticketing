@@ -7,6 +7,21 @@
   color: #ffffff;
   background-color: rgb(25, 25, 25);
 
+  /* --- COLORES Globales --- */
+  --bg-dark: #0f172a;
+  --bg-card: #1e293b;
+  --primary: #b5b6e6;
+  --primary-hover: #4f46e5;
+  --error: #ef4444;
+  --error-light: #f87171;
+  --success: #10b981;
+  --success-dark: #059669;
+  --warning: #ffc107;
+  --border-color: #334155;
+  --text-main: #ffffff;
+  --text-muted: #94a3b8;
+  /* -------------------------- */
+
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -14,8 +29,8 @@
 }
 
 body {
-  background: linear-gradient(135deg, #333333 0%, #000308 100%);
-  color: hsl(0, 0%, 100%);
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-dark) 100%);
+  color: var(--text-main);
   margin: 0;
   padding: 0;
   display: flex;
@@ -25,6 +40,9 @@ body {
   background-attachment: fixed;
 }
 
+.btn-primary {
+  color: white !important;
+}
 
 @keyframes fadeInUp {
   from {
@@ -45,15 +63,15 @@ body {
   width: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: var(--bg-dark);
 }
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: var(--border-color);
   border-radius: 5px;
-  border: 2px solid #0f172a;
+  border: 2px solid var(--bg-dark);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: var(--text-muted);
 }
 
 #root {
@@ -68,23 +86,23 @@ body {
     animation: fadeIn 0.3s ease;
 }
 
-.alert-success-custom {
-    background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+.alert-success {
+    background: linear-gradient(135deg, var(--success-dark) 0%, var(--success) 100%);
     color: white;
     border: none;
     font-weight: 600;
     box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
 }
 
-.alert-danger-custom {
-    background: linear-gradient(135deg, #b91c1c 0%, #ef4444 100%);
+.alert-danger {
+    background: linear-gradient(135deg, #b91c1c 0%, var(--error) 100%);
     color: white;
     border: none;
     font-weight: 500;
 }
 
 .invalid-feedback-custom {
-    color: #f87171;
+    color: var(--error-light);
     font-size: 0.75rem;
     margin-top: 4px;
     display: block;
@@ -97,7 +115,7 @@ body {
 }
 
 .form-control.is-invalid-custom {
-    border-color: #ef4444 !important;
+    border-color: var(--error) !important;
     box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.25) !important;
 }
 
@@ -116,3 +134,4 @@ body {
     border-radius: 50%;
     display: inline-block;
 }
+

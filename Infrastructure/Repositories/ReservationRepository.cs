@@ -46,6 +46,17 @@ namespace Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Reservation>> GetReservationsByUserIdAsync(int userId)
+        {
+            return await _context.Reservations
+                .Include(r => r.Seat)
+                    .ThenInclude(s => s.Sector)
+                        .ThenInclude(sc => sc.Event)
+                .Where(r => r.UserId == userId && r.Status == "Completed")
+                .OrderByDescending(r => r.ReservedAt)
+                .ToListAsync();
+        }
+
         public async Task DeleteReservationAsync(Reservation reservation)
         {
             _context.Reservations.Remove(reservation);

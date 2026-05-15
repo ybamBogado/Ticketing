@@ -74,7 +74,7 @@ export default function Login() {
                 </div>
 
                 {error && (
-                    <div className="alert alert-danger-custom py-2 text-center small shadow-sm mb-3">
+                    <div className="alert alert-danger py-2 text-center small shadow-sm mb-3">
                         {error}
                     </div>
                 )}

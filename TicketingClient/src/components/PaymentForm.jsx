@@ -10,11 +10,37 @@ const PaymentForm = ({ reservationId, userId, onSuccess, onCancel }) => {
     const [cvv, setCvv] = useState('');
     const [status, setStatus] = useState('');
     const [loading, setLoading] = useState(false);
+    const [validationErrors, setValidationErrors] = useState({});
+
+    const validateForm = () => {
+        const errors = {};
+        if (!cardNumber || cardNumber.length !== 16) {
+            errors.cardNumber = "El número de tarjeta debe tener 16 dígitos";
+        }
+        if (!expiryDate || !/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiryDate)) {
+            errors.expiryDate = "Formato inválido (MM/YY)";
+        }
+        if (!cvv || cvv.length !== 3) {
+            errors.cvv = "El CVV debe tener 3 dígitos";
+        }
+        if (!cardHolderName.trim()) {
+            errors.cardHolderName = "El nombre del titular es obligatorio";
+        }
+        return errors;
+    };
 
     const handlePayment = async (e) => {
         e.preventDefault();
+        
+        const errors = validateForm();
+        if (Object.keys(errors).length > 0) {
+            setValidationErrors(errors);
+            return;
+        }
+
         setLoading(true);
         setStatus('');
+        setValidationErrors({});
 
         try {
             const response = await fetch(`${API_BASE_URL}/reservations/${reservationId}/payments`, {
@@ -52,25 +78,30 @@ const PaymentForm = ({ reservationId, userId, onSuccess, onCancel }) => {
         if (onCancel) onCancel();
     };
 
+    const handleFieldChange = (field, value, setter) => {
+        setter(value);
+        if (validationErrors[field]) {
+            setValidationErrors({ ...validationErrors, [field]: null });
+        }
+    };
+
     return (
         <div className="card shadow-lg border-0 bg-dark text-white p-4 mx-auto" >
             <div className="card-body">
                 <h3 className="text-center mb-4 fw-bold border-bottom pb-3" >Procesar Pago</h3>
                 
-                <form onSubmit={handlePayment}>
+                <form onSubmit={handlePayment} noValidate>
                     <div className="mb-3">
                         <label className="form-label text-secondary small text-uppercase fw-bold">Número de Tarjeta</label>
                         <input
                             type="text"
-                            className="form-control bg-secondary bg-opacity-10 border-secondary text-white py-2"
+                            className={`form-control bg-secondary bg-opacity-10 border-secondary text-white py-2 ${validationErrors.cardNumber ? 'is-invalid-custom' : ''}`}
                             value={cardNumber}
-                            onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, '').slice(0, 16))}
+                            onChange={(e) => handleFieldChange('cardNumber', e.target.value.replace(/\D/g, '').slice(0, 16), setCardNumber)}
                             placeholder="16 dígitos de tu tarjeta"
-                            required
-                            pattern="\d{16}"
-                            title="El número de tarjeta debe tener 16 dígitos"
                             inputMode="numeric"
                         />
+                        {validationErrors.cardNumber && <span className="invalid-feedback-custom">{validationErrors.cardNumber}</span>}
                     </div>
 
                     <div className="row">
@@ -78,7 +109,7 @@ const PaymentForm = ({ reservationId, userId, onSuccess, onCancel }) => {
                             <label className="form-label text-secondary small text-uppercase fw-bold">Vencimiento</label>
                             <input 
                                 type="text" 
-                                className="form-control bg-secondary bg-opacity-10 border-secondary text-white py-2"
+                                className={`form-control bg-secondary bg-opacity-10 border-secondary text-white py-2 ${validationErrors.expiryDate ? 'is-invalid-custom' : ''}`}
                                 value={expiryDate}
                                 onChange={(e) => {
                                     let val = e.target.value.replace(/\D/g, '');    
@@ -87,29 +118,25 @@ const PaymentForm = ({ reservationId, userId, onSuccess, onCancel }) => {
                                     } else {
                                         val = val.slice(0, 2);
                                     }
-                                    setExpiryDate(val);
+                                    handleFieldChange('expiryDate', val, setExpiryDate);
                                 }}
                                 placeholder="MM/YY"
-                                required 
-                                pattern="(0[1-9]|1[0-2])\/\d{2}"
-                                title="Formato requerido: MM/YY (ej: 12/25)"
                                 inputMode="numeric"
                                 maxLength="5"
                             />
+                            {validationErrors.expiryDate && <span className="invalid-feedback-custom">{validationErrors.expiryDate}</span>}
                         </div>
                         <div className="col-md-6 mb-3">
                             <label className="form-label text-secondary small text-uppercase fw-bold">CVV</label>
                             <input 
                                 type="password" 
-                                className="form-control bg-secondary bg-opacity-10 border-secondary text-white py-2"
+                                className={`form-control bg-secondary bg-opacity-10 border-secondary text-white py-2 ${validationErrors.cvv ? 'is-invalid-custom' : ''}`}
                                 value={cvv}
-                                onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').slice(0, 3))}
+                                onChange={(e) => handleFieldChange('cvv', e.target.value.replace(/\D/g, '').slice(0, 3), setCvv)}
                                 placeholder="123"
-                                required 
-                                pattern="\d{3}"
-                                title="El CVV debe tener 3 dígitos"
                                 inputMode="numeric"
                             />
+                            {validationErrors.cvv && <span className="invalid-feedback-custom">{validationErrors.cvv}</span>}
                         </div>
                     </div>
 
@@ -117,12 +144,12 @@ const PaymentForm = ({ reservationId, userId, onSuccess, onCancel }) => {
                         <label className="form-label text-secondary small text-uppercase fw-bold">Titular de la Tarjeta</label>
                         <input
                             type="text"
-                            className="form-control bg-secondary bg-opacity-10 border-secondary text-white py-2"
+                            className={`form-control bg-secondary bg-opacity-10 border-secondary text-white py-2 ${validationErrors.cardHolderName ? 'is-invalid-custom' : ''}`}
                             value={cardHolderName}
-                            onChange={(e) => setCardHolderName(e.target.value)}
+                            onChange={(e) => handleFieldChange('cardHolderName', e.target.value, setCardHolderName)}
                             placeholder="Juan Perez"
-                            required
                         />
+                        {validationErrors.cardHolderName && <span className="invalid-feedback-custom">{validationErrors.cardHolderName}</span>}
                     </div>
 
                     <div className="d-grid gap-2">
@@ -148,12 +175,13 @@ const PaymentForm = ({ reservationId, userId, onSuccess, onCancel }) => {
                 </form>
 
                 {status && (
-                    <div className={`alert mt-4 text-center ${status.includes('Success') ? 'alert-success-custom' : 'alert-danger-custom'}`}>
+                    <div className={`alert mt-4 text-center ${status.includes('Success') ? 'alert-success' : 'alert-danger'}`}>
                         {status.replace('Success:', '').replace('Error:', '')}
                     </div>
                 )}
             </div>
         </div>
+
     );
 };
 

@@ -1,16 +1,17 @@
 import { useState, useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom' 
 import Header from '../components/Header.jsx'
 import Footer from '../components/Footer.jsx'
 import Loader from '../components/Loader.jsx'
-import { Link } from 'react-router-dom'
 import API_BASE_URL from '../config'
 import './EventCatalog.css'
 
 export default function EventCatalog() {
-
+    const location = useLocation();
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(location.state?.successMessage || null);
 
     useEffect(() => {
         fetch(`${API_BASE_URL}/events`)
@@ -57,6 +58,13 @@ export default function EventCatalog() {
         <>
             <Header />
             <div className="container mt-4 event-container">
+                {successMessage && (
+                    <div className="alert alert-success alert-dismissible fade show mb-4 shadow" role="alert">
+                        <i className="bi bi-check-circle-fill me-2"></i>
+                        {successMessage}
+                        <button type="button" className="btn-close" onClick={() => setSuccessMessage(null)}></button>
+                    </div>
+                )}
                 <h1 className="text-center mb-4 event-title fw-bold">Catálogo de Eventos</h1>
                 <div className="row justify-content-center">
                     {events.map(event => (

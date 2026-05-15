@@ -1,21 +1,21 @@
 .detail-container {
     padding: 20px;
-    color: #e0e0e0;
+    color: var(--text-muted);
 }
 
 .detail-card {
-    background-color: #333333;
-    border: 1px solid #444444;
-    color: #ffffff;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
     border-radius: 15px;
 }
 
 .escenario {
-    background-color: #1a1a1a;
-    color: #888;
+    background-color: var(--bg-dark);
+    color: var(--text-muted);
     font-weight: bold;
     letter-spacing: 5px;
-    border: 1px solid #333;
+    border: 1px solid var(--border-color);
     width: 60%;
     margin: 0 auto;
     font-size: 1.2rem;
@@ -54,23 +54,23 @@
 }
 
 .seat-box:hover {
-    box-shadow: 0 0 10px #ffffff;
+    box-shadow: 0 0 10px var(--text-main);
     z-index: 10;
 }
 
 
 .seat-box.available {
-    background-color: #28a745;
+    background-color: var(--success);
     color: white;
 }
 
 .seat-box.reserved {
-    background-color: #ffc107;
+    background-color: var(--warning);
     color: black;
 }
 
 .seat-box.sold {
-    background-color: #dc3545;
+    background-color: var(--error);
     color: white;
     cursor: not-allowed;
     opacity: 0.6;
@@ -97,15 +97,15 @@
 }
 
 .legend-dot.available {
-    background-color: #28a745;
+    background-color: var(--success);
 }
 
 .legend-dot.reserved {
-    background-color: #ffc107;
+    background-color: var(--warning);
 }
 
 .legend-dot.sold {
-    background-color: #dc3545;
+    background-color: var(--error);
 }
 
 

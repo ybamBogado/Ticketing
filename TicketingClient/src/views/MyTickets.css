@@ -1,0 +1,63 @@
+.ticket-card {
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    position: relative;
+}
+
+.ticket-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+    border-color: var(--primary);
+}
+
+.ticket-header {
+    background: linear-gradient(135deg, var(--primary) 0%, #818cf8 100%);
+    color: var(--bg-dark);
+    border-bottom: 2px dashed rgba(0, 0, 0, 0.1);
+}
+
+.ticket-body {
+    position: relative;
+    background: var(--bg-card);
+}
+
+/* Efecto de ticket troquelado */
+.ticket-body::before,
+.ticket-body::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background: #0f172a; /* Color exacto del fondo de la página */
+    border-radius: 50%;
+    top: -12px;
+    z-index: 2;
+}
+
+.ticket-body::before {
+    left: -12px;
+}
+
+.ticket-body::after {
+    right: -12px;
+}
+
+.qr-placeholder {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    height: 140px;
+}
+
+.qr-icon {
+    color: var(--primary);
+    filter: drop-shadow(0 0 10px rgba(181, 182, 230, 0.3));
+}
+
+.ticket-footer {
+    border-top: 1px solid var(--border-color);
+    background: rgba(0, 0, 0, 0.2);
+    letter-spacing: 1px;
+}

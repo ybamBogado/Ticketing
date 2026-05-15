@@ -13,6 +13,7 @@ namespace Application.Interfaces.Repositories
         Task<Reservation?> GetReservationByIdAsync(Guid id);
         Task<IEnumerable<Reservation>> GetExpiredReservationsAsync(DateTime currentUtcTime);
         Task<IEnumerable<Reservation>> GetReservationsBySeatIdAsync(Guid seatId);
+        Task<IEnumerable<Reservation>> GetReservationsByUserIdAsync(int userId);
         Task DeleteReservationAsync(Reservation reservation);
         Task<int> GetActiveReservationsCountAsync(int userId);
         Task<bool> HasRecentReservationAsync(int userId, Guid seatId, DateTime since);
