@@ -24,16 +24,28 @@ Desarrollar una plataforma integral de venta de tickets. El foco principal fue c
 
 ### Gestión de Eventos y Reservas
 - **Catálogo Dinámico**: Exploración de eventos consumidos desde una API REST.
-  <img width="1900" height="936" alt="image" src="https://github.com/user-attachments/assets/78c79f94-b3f2-4692-aa56-2e81f7e1976a" />
+  <img width="1703" height="506" alt="image" src="https://github.com/user-attachments/assets/7f456784-04bf-42ef-a64b-97a503617b0a" />
+
 
 - **Mapa de Asientos en Tiempo Real**: Visualización del estado de las butacas y sistema de reserva interactivo.
 
-https://github.com/user-attachments/assets/5035fa42-975a-49ce-be59-35e7558967e8
+<img width="1702" height="501" alt="image" src="https://github.com/user-attachments/assets/cf691f97-8f9b-4e4e-98f4-623127dc6138" />
 
+- **Pagos**:
+- <img width="1703" height="506" alt="image" src="https://github.com/user-attachments/assets/319332b4-4652-4219-9acd-a37f63f0c737" />
+
+
+- **Carrito de compras**: 
+<img width="1698" height="504" alt="image" src="https://github.com/user-attachments/assets/434c6782-7a55-4c25-be3f-0561b491ed65" />
 
 
 - **Autenticación de Usuarios**: Flujo de inicio de sesión gestionado con notificaciones dinámicas.
-<img width="1911" height="952" alt="image" src="https://github.com/user-attachments/assets/72cd59fb-658a-475b-822a-b6fd35d36e0f" />
+- <img width="1693" height="524" alt="image" src="https://github.com/user-attachments/assets/f54a94f0-06ac-4677-af5f-71c8aa49f3cb" />
+
+- **Registro**:
+<img width="1696" height="504" alt="image" src="https://github.com/user-attachments/assets/4085106d-946c-4e81-8861-ec5e15719d87" />
+
+
 
 
 ## Tecnologías Utilizadas
