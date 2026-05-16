@@ -12,9 +12,12 @@ export default function EventCatalog() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [successMessage, setSuccessMessage] = useState(location.state?.successMessage || null);
-
+    const [currentPage, setCurrentPage] = useState(1);
+    const pageSize = 10;
+    
     useEffect(() => {
-        fetch(`${API_BASE_URL}/events`)
+        setLoading(true); 
+        fetch(`${API_BASE_URL}/events?page=${currentPage}&size=${pageSize}`)
             .then(response => {
                 if (!response.ok) throw new Error("No se pudieron cargar los eventos.");
                 return response.json();
@@ -25,7 +28,7 @@ export default function EventCatalog() {
                 setError(err.message);
             })
             .finally(() => setLoading(false));
-    }, []);
+    }, [currentPage]); 
 
     if (error) {
         return (
@@ -81,6 +84,29 @@ export default function EventCatalog() {
                             </div>
                         </div>
                     ))}
+                </div>
+
+                <div className="d-flex justify-content-center align-items-center mt-4 mb-5 gap-3">
+                    <button 
+                    
+                        className={`btn btn-primary px-4 ${currentPage === 1 ? 'invisible' : ''}`} 
+                        onClick={() => setCurrentPage(prev => prev - 1)}
+                        disabled={currentPage === 1}
+                    >
+                        <i className="bi bi-chevron-left me-2"></i> Anterior
+                    </button>
+                    
+                    <span className="text-white fw-bold">
+                        Página {currentPage}
+                    </span>
+                    
+                    <button 
+                        className={`btn btn-primary px-4 ${events.length < pageSize ? 'invisible' : ''}`} 
+                        onClick={() => setCurrentPage(prev => prev + 1)}
+                        disabled={events.length < pageSize}
+                    >
+                        Siguiente <i className="bi bi-chevron-right ms-2"></i>
+                    </button>
                 </div>
             </div>
             <Footer />

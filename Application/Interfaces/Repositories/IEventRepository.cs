@@ -1,4 +1,4 @@
-﻿using Domain.Entities;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ namespace Application.Interfaces.Repositories
 {
     public interface IEventRepository
     {
-        Task<IEnumerable<Event>> GetActiveEventsWithSectorsAsync();
+        Task<IEnumerable<Event>> GetActiveEventsWithSectorsAsync(int page, int size);
         Task AddEventAsync(Event newEvent);
     }
 }
