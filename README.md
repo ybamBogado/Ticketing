@@ -24,7 +24,7 @@ Desarrollar una plataforma integral de venta de tickets. El foco principal fue c
 
 ### Gestión de Eventos y Reservas
 - **Catálogo Dinámico**: Exploración de eventos consumidos desde una API REST.
-  <img width="1707" height="503" alt="image" src="https://github.com/user-attachments/assets/8e27ec87-21f4-41e3-810c-7dd256bb57bd" />
+<img width="1707" height="503" alt="image" src="https://github.com/user-attachments/assets/8e27ec87-21f4-41e3-810c-7dd256bb57bd" />
 
 
 
@@ -34,10 +34,11 @@ Desarrollar una plataforma integral de venta de tickets. El foco principal fue c
 <img width="1702" height="501" alt="image" src="https://github.com/user-attachments/assets/cf691f97-8f9b-4e4e-98f4-623127dc6138" />
 
 - **Pagos**:
-- <img width="1703" height="506" alt="image" src="https://github.com/user-attachments/assets/319332b4-4652-4219-9acd-a37f63f0c737" />
+<img width="1703" height="506" alt="image" src="https://github.com/user-attachments/assets/319332b4-4652-4219-9acd-a37f63f0c737" />
 
-- **Carrito de compras**: 
-<img width="1698" height="504" alt="image" src="https://github.com/user-attachments/assets/434c6782-7a55-4c25-be3f-0561b491ed65" />
+- **Carrito de compras**:
+<img width="1696" height="471" alt="image" src="https://github.com/user-attachments/assets/cf41d82d-833c-4f44-8c4f-1d0dd95c35b6" />
+
 
 - **Vista de entradas del usuario**: 
 <img width="1694" height="490" alt="image" src="https://github.com/user-attachments/assets/360f972b-aa05-43b9-a974-eee8ad988f28" />
@@ -45,7 +46,7 @@ Desarrollar una plataforma integral de venta de tickets. El foco principal fue c
 
 
 - **Autenticación de Usuarios**: Flujo de inicio de sesión gestionado con notificaciones dinámicas.
-- <img width="1693" height="524" alt="image" src="https://github.com/user-attachments/assets/f54a94f0-06ac-4677-af5f-71c8aa49f3cb" />
+<img width="1693" height="524" alt="image" src="https://github.com/user-attachments/assets/f54a94f0-06ac-4677-af5f-71c8aa49f3cb" />
 
 - **Registro**:
 <img width="1696" height="504" alt="image" src="https://github.com/user-attachments/assets/4085106d-946c-4e81-8861-ec5e15719d87" />
