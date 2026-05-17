@@ -24,7 +24,9 @@ Desarrollar una plataforma integral de venta de tickets. El foco principal fue c
 
 ### Gestión de Eventos y Reservas
 - **Catálogo Dinámico**: Exploración de eventos consumidos desde una API REST.
-  <img width="1703" height="506" alt="image" src="https://github.com/user-attachments/assets/7f456784-04bf-42ef-a64b-97a503617b0a" />
+  <img width="1707" height="503" alt="image" src="https://github.com/user-attachments/assets/8e27ec87-21f4-41e3-810c-7dd256bb57bd" />
+
+
 
 
 - **Mapa de Asientos en Tiempo Real**: Visualización del estado de las butacas y sistema de reserva interactivo.
