@@ -22,7 +22,7 @@ namespace Application.Handlers
 
         public async Task<IEnumerable<EventCatalogDto>> HandlerAsync(GetEventCatalogQuery query)
         {
-            var events = await _eventRepository.GetActiveEventsWithSectorsAsync();
+            var events = await _eventRepository.GetActiveEventsWithSectorsAsync(query.Page, query.Size);
 
             var catalog = events.Select(e => new EventCatalogDto
             {

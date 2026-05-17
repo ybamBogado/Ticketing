@@ -24,11 +24,13 @@ namespace Infrastructure.Repositories
             await _context.Events.AddAsync(eventt);
         }
 
-        public async Task<IEnumerable<Event>> GetActiveEventsWithSectorsAsync()
+        public async Task<IEnumerable<Event>> GetActiveEventsWithSectorsAsync(int page, int size)
         {
             return await _context.Events
                 .Include(e => e.Sectors)
                 .Where(e => e.Status == "Active")
+                .Skip((page - 1) * size)
+                .Take(size)
                 .ToListAsync();
         }
     }

@@ -27,9 +27,9 @@ namespace Api.Controllers
         /// <response code="200">Retorna la lista de eventos exitosamente.</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<EventCatalogDto>>> GetCatalog()
+        public async Task<ActionResult<IEnumerable<EventCatalogDto>>> GetCatalog([FromQuery] GetEventCatalogQuery query)
         {
-            var result= await _getEventCatalogQueryHandler.HandlerAsync(new GetEventCatalogQuery());
+            var result = await _getEventCatalogQueryHandler.HandlerAsync(query);
             
             return Ok(result);
         }
